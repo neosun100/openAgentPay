@@ -1,0 +1,42 @@
+[project]
+name = "openagentpay-instructor"
+version = "0.1.0a0"
+description = "OpenAgentPay tool for the `instructor` library — Pydantic-typed payment request/response models for structured-output LLM flows, backed by OpenAgentPay's pluggable wallet/protocol infrastructure."
+readme = "README.md"
+license = { text = "Apache-2.0" }
+authors = [{ name = "Neo Sun", email = "neosun100@github" }]
+requires-python = ">=3.10"
+dependencies = [
+  "httpx>=0.27.0",
+  "pydantic>=2.6.0",
+]
+keywords = ["instructor", "structured-output", "ai-agent", "payments", "x402", "pydantic"]
+
+[project.optional-dependencies]
+# instructor is OPTIONAL — the response models + executor work as plain
+# Pydantic without it. Install the [instructor] extra for the patched-LLM flow.
+instructor = [
+  "instructor>=1.0.0",
+]
+dev = [
+  "pytest>=8.0.0",
+  "pytest-asyncio>=0.23.0",
+  "pytest-mock>=3.12.0",
+  "respx>=0.21.0",
+  "ruff>=0.5.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/neosun100/openAgentPay"
+Repository = "https://github.com/neosun100/openAgentPay"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["openagentpay_instructor"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
