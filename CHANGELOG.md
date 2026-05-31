@@ -8,6 +8,49 @@ working snapshot.
 
 ---
 
+## [0.12.0] · 2026-05-31 — **Full client SDKs (TS + Python) + EVM L2 matrix**
+
+> **Headline**: the LiteLLM "client → proxy" half is now complete in **both
+> languages**, and the wallet matrix reaches **34 connectors** with 6 EVM L2
+> rails. A developer points `OpenAgentPayClient` at a running oap-proxy and
+> pays in one line — TypeScript or Python, same surface.
+>
+> **Stats**: **2268 TS + 52 Python = 2320 tests** (was 2045) · 34 wallet
+> connectors (was 28) · 18/18 protocols conformance · zero failures.
+
+### Added — `@openagentpay/sdk` (TypeScript full client)
+
+- `OpenAgentPayClient` — typed remote HTTP client wrapping the oap REST API:
+  `createSession`, `pay`, `getSession`, `listWallets`, `getGovernance`,
+  `getAudit`, `payOnce`. Injectable `fetch` (no axios), Bearer auth,
+  `OpenAgentPayApiError` on non-2xx, re-exports core Money/Session types.
+  19 tests.
+
+### Added — `openagentpay` Python full client
+
+- `OpenAgentPayClient` (async httpx) — the Python twin: `create_session`,
+  `pay`, `get_session`, `list_wallets`, `get_governance`, `get_audit`,
+  `pay_once`. Pydantic response models; governance denials surface as
+  `PayResult.success=false`; only transport errors raise. 21 new respx-mocked
+  tests (29 total in package). Upgrades python-sdk from types-only to a full
+  client.
+
+### Added — 6 EVM L2 wallet connectors (matrix 28 → 34)
+
+`wallet-base` (Base Sepolia), `wallet-arbitrum` (Arbitrum Sepolia),
+`wallet-optimism` (Optimism Sepolia), `wallet-polygon` (Polygon Amoy),
+`wallet-zksync` (zkSync Sepolia), `wallet-linea` (Linea Sepolia). All
+x402-v1 / EIP-3009 over viem, USDC on each testnet, conformance-green
+offline + LIVE, real in-process EVM keypair + real EIP-712 signing.
+
+### Fixed
+
+- Conformance/unit suites caught two real connector bugs during the EVM
+  build: arbitrum EIP-712 field assembly and an optimism explorer-URL
+  mismatch — both fixed by the workflow verify stage.
+
+---
+
 ## [0.11.1] · 2026-05-31 — **Breadth pass — 28 wallets · 18/18 protocols conformance-covered**
 
 > **Headline**: a coverage-breadth expansion on top of v0.11.0. The wallet
