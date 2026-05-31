@@ -1066,6 +1066,20 @@ nav.tabs {
   vertical-align: middle;
 }
 
+.matrix-l2-badge {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 1px 6px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  color: #0a0a0a;
+  background: linear-gradient(135deg, #30d158, #28b14a);
+  border-radius: 4px;
+  vertical-align: middle;
+  box-shadow: 0 0 8px rgba(48, 209, 88, 0.45);
+}
+
 .matrix-cell-live {
   display: inline-flex;
   align-items: center;

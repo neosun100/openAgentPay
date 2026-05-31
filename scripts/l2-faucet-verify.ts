@@ -15,15 +15,20 @@
  * Chains covered (public faucets, no credentials needed):
  *   - Stellar testnet  (Friendbot — funds + activates the account)
  *   - Aptos devnet     (faucet mint — creates the account's CoinStore)
+ *   - Sui devnet       (v2 faucet — funds 10 SUI, returns a transferTxDigest)
  *
- * Sui / TRON faucets are reachable but rate-limited / require precise request
- * bodies; they're left as TODO with their endpoints documented inline.
+ * L1-only (faucet blocks datacenter IPs or requires CAPTCHA — connector is
+ * still conformance-green, just not auto-fundable from CI):
+ *   - Solana devnet    (public RPC requestAirdrop rate-limits/blocks; needs Helius key)
+ *   - TRON Shasta      (faucet is now a web form behind CAPTCHA)
+ *   - Polkadot Westend (Matrix/Element-gated faucet)
  *
  * @license Apache-2.0
  */
 
 import { generateStellarKeypair } from "../packages/wallet-stellar/src/real-signer.js";
 import { generateAptosKeypair } from "../packages/wallet-aptos/src/real-signer.js";
+import { generateSuiKeypair } from "../packages/wallet-sui/src/real-signer.js";
 
 interface L2Result {
   readonly chain: string;
@@ -127,6 +132,66 @@ async function verifyAptos(): Promise<L2Result> {
   }
 }
 
+async function verifySui(): Promise<L2Result> {
+  const kp = generateSuiKeypair() as unknown as { address: string };
+  const address = kp.address;
+  const explorer = `https://suiscan.xyz/devnet/account/${address}`;
+  try {
+    const fund = await fetch("https://faucet.devnet.sui.io/v2/gas", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ FixedAmountRequest: { recipient: address } }),
+    });
+    if (fund.status !== 200) {
+      return {
+        chain: "sui-devnet",
+        address,
+        funded: false,
+        onChainConfirmed: false,
+        explorer,
+        note: `faucet HTTP ${fund.status}`,
+      };
+    }
+    await sleep(5000);
+    const bal = await fetch("https://fullnode.devnet.sui.io:443", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        jsonrpc: "2.0",
+        id: 1,
+        method: "suix_getBalance",
+        params: [address],
+      }),
+    });
+    let total = "(pending)";
+    let confirmed = false;
+    if (bal.status === 200) {
+      const j = (await bal.json()) as {
+        result?: { totalBalance?: string };
+      };
+      total = j.result?.totalBalance ?? "(pending)";
+      confirmed = total !== "(pending)" && total !== "0";
+    }
+    return {
+      chain: "sui-devnet",
+      address,
+      funded: true,
+      onChainConfirmed: confirmed,
+      explorer,
+      note: `SUI balance ${total} (MIST)`,
+    };
+  } catch (err) {
+    return {
+      chain: "sui-devnet",
+      address,
+      funded: false,
+      onChainConfirmed: false,
+      explorer,
+      note: `error ${err instanceof Error ? err.message : String(err)}`,
+    };
+  }
+}
+
 function sleep(ms: number): Promise<void> {
   return new Promise((r) => setTimeout(r, ms));
 }
@@ -138,7 +203,7 @@ async function main(): Promise<void> {
       "\n🌊  OpenAgentPay L2 Faucet Verification — real testnet on-chain proof\n" +
       "─".repeat(80)
   );
-  const results = await Promise.all([verifyStellar(), verifyAptos()]);
+  const results = await Promise.all([verifyStellar(), verifyAptos(), verifySui()]);
   let confirmed = 0;
   for (const r of results) {
     const status = r.onChainConfirmed ? "✅ ON-CHAIN" : r.funded ? "🟡 funded" : "❌ failed";

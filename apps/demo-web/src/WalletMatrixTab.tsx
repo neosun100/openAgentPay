@@ -66,11 +66,26 @@ const ROADMAP_ROWS: ReadonlyArray<{
   { id: "lightning", label: "Lightning", chain: "BTC", protocols: ["l402"] },
 ];
 
+/**
+ * Wallet providers proven L2 (real testnet on-chain) — funded via public
+ * faucets + balance confirmed on-chain by `pnpm l2:verify`. These get an
+ * "L2 ✓" badge to distinguish "account funded + queryable on-chain" from
+ * "L1 conformance-green (signature real, broadcast deferred)".
+ */
+const L2_CONFIRMED: ReadonlySet<string> = new Set([
+  "hashkey-chain", // real on-chain txs in e2e smoke
+  "coinbase-cdp", // real on-chain txs in e2e smoke
+  "stellar", // Friendbot → 10000 XLM, Horizon-queryable
+  "aptos", // devnet faucet → CoinStore live
+  "sui", // v2 faucet → 10 SUI on-chain
+]);
+
 interface MatrixRow {
   readonly id: string;
   readonly label: string;
   readonly chain: string;
   readonly live: boolean;
+  readonly l2: boolean;
   readonly supported: ReadonlySet<string>;
 }
 
@@ -83,6 +98,7 @@ function buildRows(liveWallets: ReadonlyArray<WalletEntry>): MatrixRow[] {
       label: w.displayName,
       chain: w.chainName,
       live: true,
+      l2: L2_CONFIRMED.has(w.walletProvider),
       supported: new Set(protos),
     });
   }
@@ -94,6 +110,7 @@ function buildRows(liveWallets: ReadonlyArray<WalletEntry>): MatrixRow[] {
       label: r.label,
       chain: r.chain,
       live: false,
+      l2: false,
       supported: new Set(r.protocols),
     });
   }
@@ -219,6 +236,14 @@ export function WalletMatrixTab(): JSX.Element {
                 <td className="matrix-td-wallet">
                   {row.live && <span className="matrix-row-dot" />}
                   {row.label}
+                  {row.l2 && (
+                    <span
+                      className="matrix-l2-badge"
+                      title="L2 confirmed — real testnet account funded + on-chain queryable (pnpm l2:verify)"
+                    >
+                      L2 ✓
+                    </span>
+                  )}
                 </td>
                 <td className="matrix-td-chain">{row.chain}</td>
                 {PROTOCOLS.map((p) => {
