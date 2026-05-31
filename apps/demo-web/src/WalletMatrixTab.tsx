@@ -52,6 +52,13 @@ const LIVE_COVERAGE: Readonly<Record<string, ReadonlyArray<string>>> = {
   circle: ["x402", "ap2"],
   magic: ["x402", "ap2"],
   zerodev: ["x402", "ap2"],
+  // v0.16 chain expansion (52 -> 58)
+  ronin: ["x402"],
+  sonic: ["x402"],
+  "berachain-mainnet": ["x402"],
+  movement: ["aptos-pay", "x402"],
+  initia: ["cosmos-ibc"],
+  stacks: ["x402"],
 };
 
 /** Roadmap rows — wallets not yet served live. Greyed in the grid. */

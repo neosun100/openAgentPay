@@ -90,6 +90,9 @@ importers:
       '@openagentpay/wallet-base':
         specifier: workspace:*
         version: link:../../packages/wallet-base
+      '@openagentpay/wallet-berachain-mainnet':
+        specifier: workspace:*
+        version: link:../../packages/wallet-berachain-mainnet
       '@openagentpay/wallet-bitcoin':
         specifier: workspace:*
         version: link:../../packages/wallet-bitcoin
@@ -123,12 +126,18 @@ importers:
       '@openagentpay/wallet-hedera':
         specifier: workspace:*
         version: link:../../packages/wallet-hedera
+      '@openagentpay/wallet-initia':
+        specifier: workspace:*
+        version: link:../../packages/wallet-initia
       '@openagentpay/wallet-linea':
         specifier: workspace:*
         version: link:../../packages/wallet-linea
       '@openagentpay/wallet-magic':
         specifier: workspace:*
         version: link:../../packages/wallet-magic
+      '@openagentpay/wallet-movement':
+        specifier: workspace:*
+        version: link:../../packages/wallet-movement
       '@openagentpay/wallet-near':
         specifier: workspace:*
         version: link:../../packages/wallet-near
@@ -144,9 +153,18 @@ importers:
       '@openagentpay/wallet-polygon':
         specifier: workspace:*
         version: link:../../packages/wallet-polygon
+      '@openagentpay/wallet-ronin':
+        specifier: workspace:*
+        version: link:../../packages/wallet-ronin
       '@openagentpay/wallet-solana':
         specifier: workspace:*
         version: link:../../packages/wallet-solana
+      '@openagentpay/wallet-sonic':
+        specifier: workspace:*
+        version: link:../../packages/wallet-sonic
+      '@openagentpay/wallet-stacks':
+        specifier: workspace:*
+        version: link:../../packages/wallet-stacks
       '@openagentpay/wallet-stellar':
         specifier: workspace:*
         version: link:../../packages/wallet-stellar
