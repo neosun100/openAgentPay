@@ -23,8 +23,6 @@ jobs:
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
-        with:
-          version: 11
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -53,8 +51,6 @@ jobs:
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
-        with:
-          version: 11
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -100,6 +96,6 @@ jobs:
           set -e
           for pkg in strands-plugin autogen-plugin crewai-plugin semantic-kernel-plugin pydantic-ai-plugin; do
             echo "::group::pytest $pkg"
-            ( cd "packages/$pkg" && uv run --no-project --with pytest --with pytest-asyncio python -m pytest tests/ -q )
+            ( cd "packages/$pkg" && uv run --no-project --with . --with pytest --with pytest-asyncio --with pytest-mock --with respx python -m pytest tests/ -q )
             echo "::endgroup::"
           done
