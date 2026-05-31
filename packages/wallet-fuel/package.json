@@ -1,7 +1,7 @@
 {
-  "name": "@openagentpay/wallet-celestia",
+  "name": "@openagentpay/wallet-fuel",
   "version": "0.1.0-alpha.0",
-  "description": "Celestia (Cosmos-SDK) wallet connector for OpenAgentPay — secp256k1 + BIP39/BIP44 + bech32 (celestia1…), Mocha testnet proof-of-abstraction.",
+  "description": "Fuel (FuelVM) wallet connector for OpenAgentPay — secp256k1 over sha256, b256 (32-byte hex) address derived from sha256(pubkey), ETH (9dp) + USDC. Offline-real signer, deferred broadcast.",
   "license": "Apache-2.0",
   "type": "module",
   "main": "./dist/index.js",
@@ -18,14 +18,13 @@
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist *.tsbuildinfo"
   },
-  "keywords": ["celestia", "cosmos", "tia", "mocha", "openagentpay", "non-evm", "secp256k1", "bech32"],
+  "keywords": ["fuel", "fuelvm", "fuel-pay", "openagentpay", "non-evm", "secp256k1", "b256", "wallet-connector"],
   "dependencies": {
     "@openagentpay/core": "workspace:*",
     "@noble/curves": "^1.9.0",
     "@noble/hashes": "^1.8.0",
     "@scure/base": "^1.2.0",
-    "@scure/bip32": "^1.7.0",
-    "@scure/bip39": "^1.6.0"
+    "@scure/bip39": "^1.5.0"
   },
   "devDependencies": {
     "@openagentpay/conformance": "workspace:*",

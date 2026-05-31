@@ -16,6 +16,7 @@ export {
   PROTOCOL_ID,
   WALLET_PROVIDER_ID,
   TIA_NATIVE_DENOM,
+  USDC_NATIVE_DENOM,
   CELESTIA_BECH32_PREFIX,
   // Types
   type CelestiaConnectorConfig,
@@ -33,6 +34,7 @@ export {
   CELESTIA_COIN_TYPE,
   CELESTIA_HD_PATH,
   TIA_DENOM,
+  USDC_DENOM,
   type CelestiaWallet,
   type CelestiaKeypair,
   type RealCelestiaSignerConfig,

@@ -1,21 +1,21 @@
 /**
- * Celestia Wallet Connector
+ * Starknet Wallet Connector
  * =========================
  *
- * Non-EVM connector proving the WalletConnector abstraction holds for the
- * Celestia modular data-availability (DA) chain — a Cosmos SDK chain:
+ * A WalletConnector for Starknet (STARK-friendly validity-rollup L2, Sepolia by
+ * default), backed by a real secp256k1 signer with a deterministic
+ * felt252-shaped address. Broadcast stays behind the signer's pluggable
+ * `submit` hook so signing runs fully offline.
  *
- *   - Crypto: secp256k1 ECDSA (compressed pubkeys) — same curve as Cosmos Hub.
- *   - Identity: 24-word BIP39 mnemonic → BIP44 m/44'/118'/0'/0/0.
- *   - Address: bech32 "celestia1…" (vs cosmos1… / EVM 0x… / Solana base58).
- *   - Settlement: bank MsgSend (vs EVM contract call).
- *   - Native asset: TIA (utia, 6 decimals).
- *
- * Satisfies the identical 5-method WalletConnector contract.
- *
- * Implementation: pure TypeScript signing through `RealCelestiaSigner`. On-chain
- * broadcast is pluggable via the signer's optional `submit` hook — defaulting
- * to an offline-safe path so conformance + unit tests run without a network.
+ * Proves the WalletConnector abstraction holds for a STARK-friendly L2:
+ *   - Account model: account-abstraction contracts (Starknet) — every account
+ *     is a contract; addresses are felt252 field elements.
+ *   - Address: felt252 — `0x` + up to 64 hex, value < the STARK prime field.
+ *     Here derived as keccak(secp256k1 pubkey)[:31 bytes] → felt (testnet-shaped,
+ *     documented in real-signer.ts).
+ *   - Assets: native ETH (18 decimals) + USDC (6 decimals).
+ *   - Settlement: single-step (like Solana/Stacks). signAuthorization() builds +
+ *     signs the transfer intent; settle() adapts that into a SettlementResult.
  *
  * @license Apache-2.0
  */
@@ -38,29 +38,29 @@ import type {
 } from "@openagentpay/core";
 
 import {
-  RealCelestiaSigner,
+  RealStarknetSigner,
   canonicalTransferDescriptor,
-  CELESTIA_BECH32_PREFIX,
-  TIA_DENOM,
-  USDC_DENOM,
+  type StarknetNetwork,
 } from "./real-signer.js";
 
 // ============================================================================
 //  Constants
 // ============================================================================
 
-export const PROTOCOL_ID = "celestia-pay-v1" as ProtocolId;
-export const WALLET_PROVIDER_ID = "celestia" as WalletProviderId;
+export const PROTOCOL_ID = "starknet-pay-v1" as ProtocolId;
+export const WALLET_PROVIDER_ID = "starknet" as WalletProviderId;
+export const X_PAYMENT_STARKNET_HEADER = "X-PAYMENT-STARKNET";
 
-/** Canonical denom for the native TIA token (micro-TIA). */
-export const TIA_NATIVE_DENOM = TIA_DENOM;
-/** USDC denom on Celestia (micro-USDC). */
-export const USDC_NATIVE_DENOM = USDC_DENOM;
-
+/** Native ETH (18 dp) + USDC (6 dp) — both well under the 24-decimal cap. */
 const SUPPORTED_ASSETS: readonly Asset[] = [
-  { symbol: "TIA", decimals: 6 },
+  { symbol: "ETH", decimals: 18 },
   { symbol: "USDC", decimals: 6 },
 ];
+
+function decimalsFor(symbol: string): number {
+  const a = SUPPORTED_ASSETS.find((x) => x.symbol === symbol);
+  return a ? a.decimals : 18;
+}
 
 // ============================================================================
 //  InstrumentStore
@@ -91,46 +91,43 @@ export class MemoryInstrumentStore implements InstrumentStore {
 //  WalletConnector
 // ============================================================================
 
-export interface CelestiaConnectorConfig {
-  readonly signer: RealCelestiaSigner;
+export interface StarknetConnectorConfig {
+  readonly signer: RealStarknetSigner;
   readonly instrumentStore: InstrumentStore;
-  /** Chain id label for capabilities / settlement (default from signer). */
-  readonly chainId?: string;
-  /** Default denom to read for getBalance() (default "utia"). */
-  readonly defaultDenom?: string;
+  /** Network — defaults to "sepolia". */
+  readonly network?: StarknetNetwork;
   readonly now?: () => number;
 }
 
-export class CelestiaConnector implements WalletConnector {
-  private readonly signer: RealCelestiaSigner;
+export class StarknetConnector implements WalletConnector {
+  private readonly signer: RealStarknetSigner;
   private readonly store: InstrumentStore;
-  private readonly chainId: string;
-  private readonly defaultDenom: string;
+  private readonly network: StarknetNetwork;
   private readonly now: () => number;
 
-  constructor(cfg: CelestiaConnectorConfig) {
+  constructor(cfg: StarknetConnectorConfig) {
     this.signer = cfg.signer;
     this.store = cfg.instrumentStore;
-    this.chainId = cfg.chainId ?? cfg.signer.chainId;
-    this.defaultDenom = cfg.defaultDenom ?? TIA_NATIVE_DENOM;
+    this.network = cfg.network ?? "sepolia";
     this.now = cfg.now ?? Date.now;
   }
 
   getCapabilities(): WalletCapabilities {
     return {
       walletProvider: WALLET_PROVIDER_ID,
-      displayName: `Celestia (${this.chainId})`,
+      displayName: `Starknet (${this.network})`,
       supportedAssets: SUPPORTED_ASSETS,
       supportedProtocols: [PROTOCOL_ID],
-      requiresUserApproval: false, // server-side mnemonic signer
+      requiresUserApproval: false, // server-side signer
       settlesOnChain: true,
-      typicalLatencyMs: 6000, // ~6s block times
+      typicalLatencyMs: 30_000, // STARK proof + L1 confirmation cadence
       features: {
-        nonEvm: true,
-        secp256k1: true,
-        bech32Prefix: this.signer.prefix,
-        modularDA: true,
-        chainId: this.chainId,
+        l2: true,
+        starkFriendly: true,
+        accountAbstraction: true,
+        secp256k1Signer: true, // testnet-shaped identity; see real-signer.ts
+        addressFormat: "felt252",
+        network: this.network,
       },
     };
   }
@@ -141,7 +138,7 @@ export class CelestiaConnector implements WalletConnector {
     }
     const existing = await this.store.get(input.userId);
     if (existing) return existing;
-    const id = `payment-instrument-celestia-${input.userId}` as InstrumentId;
+    const id = `payment-instrument-starknet-${input.userId}` as InstrumentId;
     const instrument: Instrument = {
       id,
       userId: input.userId,
@@ -149,10 +146,9 @@ export class CelestiaConnector implements WalletConnector {
       publicHandle: this.signer.address,
       createdAt: nowIso(this.now()),
       providerMetadata: {
-        chainId: this.chainId,
-        bech32Prefix: this.signer.prefix,
-        pubkeyHex: this.signer.publicKeyHex,
-        defaultDenom: this.defaultDenom,
+        network: this.network,
+        addressFormat: "felt252",
+        publicKey: this.signer.publicKeyHex,
         ...input.metadata,
       },
     };
@@ -162,14 +158,15 @@ export class CelestiaConnector implements WalletConnector {
 
   async getBalance(instrumentId: InstrumentId): Promise<Balance> {
     const inst = await this.requireInstrument(instrumentId);
-    const atomic = await this.signer.getBalance(this.defaultDenom);
-    const symbol = this.defaultDenom === USDC_NATIVE_DENOM ? "USDC" : "TIA";
+    const symbol = "ETH";
+    const decimals = decimalsFor(symbol);
+    const atomic = await this.signer.getBalance(symbol);
     return {
       instrumentId: inst.id,
-      asset: { symbol, decimals: 6 },
+      asset: { symbol, decimals },
       money: {
         amountAtomic: atomic.toString(),
-        decimals: 6,
+        decimals,
         currency: symbol,
       },
       fetchedAt: nowIso(this.now()),
@@ -177,17 +174,16 @@ export class CelestiaConnector implements WalletConnector {
   }
 
   /**
-   * Celestia transfers are single-shot (build → sign → broadcast). We split the
-   * flow to fit the 5-method contract: signAuthorization() produces the real
-   * secp256k1 authorization (and broadcasts if a `submit` hook is wired);
-   * settle() returns the result.
+   * Starknet is single-step: signAuthorization() builds + signs the transfer
+   * intent (no broadcast unless a `submit` hook is wired); settle() adapts the
+   * signed result into a SettlementResult.
    */
   async signAuthorization(
     input: SignAuthorizationInput
   ): Promise<SignedAuthorization> {
     if (input.request.protocol !== PROTOCOL_ID) {
       throw new Error(
-        `CelestiaConnector only supports ${PROTOCOL_ID}, got ${input.request.protocol}`
+        `StarknetConnector only supports ${PROTOCOL_ID}, got ${input.request.protocol}`
       );
     }
     const inst = await this.requireInstrument(input.instrumentId);
@@ -196,11 +192,12 @@ export class CelestiaConnector implements WalletConnector {
         `Instrument publicHandle ${inst.publicHandle} does not match signer ${this.signer.address}`
       );
     }
-    const denom = this.denomForAsset(input.request.asset.symbol);
+    const asset = input.request.asset.symbol;
     const result = await this.signer.signAndSubmit({
       recipient: input.request.recipient,
       amountAtomic: input.request.amount.amountAtomic,
-      denom,
+      asset,
+      reference: input.request.nonce,
       ...(input.request.description !== undefined
         ? { memo: input.request.description }
         : {}),
@@ -208,45 +205,40 @@ export class CelestiaConnector implements WalletConnector {
     return {
       request: input.request,
       signer: this.signer.address,
-      signature: result.signature,
+      signature: result.signature, // compact secp256k1 — verifiable offline
       extra: {
-        pubkeyHex: this.signer.publicKeyHex,
-        denom,
-        chainId: this.chainId,
-        ...(result.txHash !== undefined ? { txHash: result.txHash } : {}),
-        ...(result.height !== undefined ? { height: result.height } : {}),
-        ...(result.explorerUrl !== undefined
-          ? { explorerUrl: result.explorerUrl }
-          : {}),
+        txHash: result.txHash,
+        explorerUrl: result.explorerUrl,
+        network: this.network,
+        publicKey: this.signer.publicKeyHex,
       },
     };
   }
 
   async settle(signed: SignedAuthorization): Promise<SettlementResult> {
+    // signAuthorization already built + (optionally) broadcast the tx.
     if (!signed.signature) {
       return {
         success: false,
-        network: `celestia-${this.chainId}`,
+        network: `starknet-${this.network}`,
         settledAt: nowIso(this.now()),
         errorCode: "signature_invalid",
-        errorMessage: "Missing transfer signature",
+        errorMessage: "Missing transaction signature",
       };
     }
     const e = (signed.extra ?? {}) as Record<string, unknown>;
-    // On-chain tx hash if broadcast happened; else fall back to the signature
-    // as the local authorization reference (offline-safe).
-    const txRef = (typeof e["txHash"] === "string" && e["txHash"]
-      ? (e["txHash"] as string)
-      : signed.signature) as TransactionRef;
+    const txHash =
+      typeof e["txHash"] === "string" ? (e["txHash"] as string) : undefined;
     return {
       success: true,
-      transactionRef: txRef,
-      network: `celestia-${this.chainId}`,
+      ...(txHash !== undefined
+        ? { transactionRef: txHash as TransactionRef }
+        : {}),
+      network: `starknet-${this.network}`,
       settledAt: nowIso(this.now()),
       settledAmount: signed.request.amount,
       raw: {
-        denom: e["denom"],
-        height: e["height"],
+        txHash: e["txHash"],
         explorerUrl: e["explorerUrl"],
       },
     };
@@ -254,29 +246,22 @@ export class CelestiaConnector implements WalletConnector {
 
   // ---- Helpers -------------------------------------------------------------
 
-  /** Re-derive the canonical descriptor for a signed request (for audit/verify). */
-  descriptorFor(signed: SignedAuthorization): string {
-    const e = (signed.extra ?? {}) as Record<string, unknown>;
-    const denom =
-      typeof e["denom"] === "string"
-        ? (e["denom"] as string)
-        : this.denomForAsset(signed.request.asset.symbol);
+  /** Recompute the canonical descriptor for a request — used by audits/tests. */
+  descriptorFor(input: {
+    recipient: string;
+    amountAtomic: string;
+    asset: string;
+    reference?: string;
+    memo?: string;
+  }): string {
     return canonicalTransferDescriptor({
-      from: signed.signer,
-      to: signed.request.recipient,
-      amountAtomic: signed.request.amount.amountAtomic,
-      denom,
-      chainId: this.chainId,
-      ...(signed.request.description !== undefined
-        ? { memo: signed.request.description }
-        : {}),
+      from: this.signer.address,
+      to: input.recipient,
+      amountAtomic: input.amountAtomic,
+      asset: input.asset,
+      ...(input.reference !== undefined ? { reference: input.reference } : {}),
+      ...(input.memo !== undefined ? { memo: input.memo } : {}),
     });
-  }
-
-  private denomForAsset(symbol: string): string {
-    if (symbol === "USDC") return USDC_NATIVE_DENOM;
-    if (symbol === "TIA") return TIA_NATIVE_DENOM;
-    return this.defaultDenom;
   }
 
   private async requireInstrument(id: InstrumentId): Promise<Instrument> {
@@ -293,6 +278,3 @@ export class CelestiaConnector implements WalletConnector {
 function nowIso(t: number): string {
   return new Date(t).toISOString();
 }
-
-// Re-export the prefix constant so consumers don't need the signer module.
-export { CELESTIA_BECH32_PREFIX };
