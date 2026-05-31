@@ -222,6 +222,25 @@ importers:
         specifier: ^5.4.0
         version: 5.4.21(@types/node@22.19.19)
 
+  packages/agno-plugin:
+    dependencies:
+      '@openagentpay/core':
+        specifier: workspace:*
+        version: link:../core
+      '@openagentpay/governance':
+        specifier: workspace:*
+        version: link:../governance
+      '@openagentpay/llamaindex-plugin':
+        specifier: workspace:*
+        version: link:../llamaindex-plugin
+    devDependencies:
+      typescript:
+        specifier: ^5.5.0
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.0
+        version: 2.1.9(@types/node@22.19.19)
+
   packages/ai-sdk-v5-plugin:
     dependencies:
       '@openagentpay/core':
@@ -439,7 +458,45 @@ importers:
         specifier: ^2.1.0
         version: 2.1.9(@types/node@22.19.19)
 
+  packages/llamaindex-workflows-plugin:
+    dependencies:
+      '@openagentpay/core':
+        specifier: workspace:*
+        version: link:../core
+      '@openagentpay/governance':
+        specifier: workspace:*
+        version: link:../governance
+      '@openagentpay/llamaindex-plugin':
+        specifier: workspace:*
+        version: link:../llamaindex-plugin
+    devDependencies:
+      typescript:
+        specifier: ^5.5.0
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.0
+        version: 2.1.9(@types/node@22.19.19)
+
   packages/mastra-plugin:
+    dependencies:
+      '@openagentpay/core':
+        specifier: workspace:*
+        version: link:../core
+      '@openagentpay/governance':
+        specifier: workspace:*
+        version: link:../governance
+      '@openagentpay/llamaindex-plugin':
+        specifier: workspace:*
+        version: link:../llamaindex-plugin
+    devDependencies:
+      typescript:
+        specifier: ^5.5.0
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.0
+        version: 2.1.9(@types/node@22.19.19)
+
+  packages/motia-plugin:
     dependencies:
       '@openagentpay/core':
         specifier: workspace:*
@@ -802,11 +859,49 @@ importers:
         specifier: ^2.1.9
         version: 2.1.9(@types/node@22.19.19)
 
+  packages/pydantic-graph-plugin:
+    dependencies:
+      '@openagentpay/core':
+        specifier: workspace:*
+        version: link:../core
+      '@openagentpay/governance':
+        specifier: workspace:*
+        version: link:../governance
+      '@openagentpay/llamaindex-plugin':
+        specifier: workspace:*
+        version: link:../llamaindex-plugin
+    devDependencies:
+      typescript:
+        specifier: ^5.5.0
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.0
+        version: 2.1.9(@types/node@22.19.19)
+
   packages/sdk:
     dependencies:
       '@openagentpay/core':
         specifier: workspace:*
         version: link:../core
+    devDependencies:
+      typescript:
+        specifier: ^5.5.0
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.0
+        version: 2.1.9(@types/node@22.19.19)
+
+  packages/smolagents-plugin:
+    dependencies:
+      '@openagentpay/core':
+        specifier: workspace:*
+        version: link:../core
+      '@openagentpay/governance':
+        specifier: workspace:*
+        version: link:../governance
+      '@openagentpay/llamaindex-plugin':
+        specifier: workspace:*
+        version: link:../llamaindex-plugin
     devDependencies:
       typescript:
         specifier: ^5.5.0
@@ -960,6 +1055,25 @@ importers:
         specifier: ^2.1.0
         version: 2.1.9(@types/node@22.19.19)
 
+  packages/wallet-berachain:
+    dependencies:
+      '@openagentpay/core':
+        specifier: workspace:*
+        version: link:../core
+      viem:
+        specifier: ^2.21.0
+        version: 2.49.3(typescript@5.9.3)(zod@3.25.76)
+    devDependencies:
+      '@openagentpay/conformance':
+        specifier: workspace:*
+        version: link:../conformance
+      typescript:
+        specifier: ^5.5.0
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.0
+        version: 2.1.9(@types/node@22.19.19)
+
   packages/wallet-binance:
     dependencies:
       '@openagentpay/core':
@@ -1046,6 +1160,37 @@ importers:
       '@scure/base':
         specifier: ^1.2.0
         version: 1.2.6
+    devDependencies:
+      '@openagentpay/conformance':
+        specifier: workspace:*
+        version: link:../conformance
+      typescript:
+        specifier: ^5.5.0
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.0
+        version: 2.1.9(@types/node@22.19.19)
+
+  packages/wallet-celestia:
+    dependencies:
+      '@noble/curves':
+        specifier: ^1.9.0
+        version: 1.9.1
+      '@noble/hashes':
+        specifier: ^1.8.0
+        version: 1.8.0
+      '@openagentpay/core':
+        specifier: workspace:*
+        version: link:../core
+      '@scure/base':
+        specifier: ^1.2.0
+        version: 1.2.6
+      '@scure/bip32':
+        specifier: ^1.7.0
+        version: 1.7.0
+      '@scure/bip39':
+        specifier: ^1.6.0
+        version: 1.6.0
     devDependencies:
       '@openagentpay/conformance':
         specifier: workspace:*
@@ -1256,6 +1401,65 @@ importers:
       '@scure/base':
         specifier: ^1.2.0
         version: 1.2.6
+    devDependencies:
+      '@openagentpay/conformance':
+        specifier: workspace:*
+        version: link:../conformance
+      typescript:
+        specifier: ^5.5.0
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.0
+        version: 2.1.9(@types/node@22.19.19)
+
+  packages/wallet-injective:
+    dependencies:
+      '@noble/curves':
+        specifier: ^1.9.0
+        version: 1.9.1
+      '@noble/hashes':
+        specifier: ^1.8.0
+        version: 1.8.0
+      '@openagentpay/core':
+        specifier: workspace:*
+        version: link:../core
+      '@scure/base':
+        specifier: ^1.2.0
+        version: 1.2.6
+      '@scure/bip32':
+        specifier: ^1.7.0
+        version: 1.7.0
+      '@scure/bip39':
+        specifier: ^1.6.0
+        version: 1.6.0
+    devDependencies:
+      '@openagentpay/conformance':
+        specifier: workspace:*
+        version: link:../conformance
+      typescript:
+        specifier: ^5.5.0
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.0
+        version: 2.1.9(@types/node@22.19.19)
+
+  packages/wallet-kaspa:
+    dependencies:
+      '@noble/curves':
+        specifier: ^1.9.0
+        version: 1.9.1
+      '@noble/hashes':
+        specifier: ^1.8.0
+        version: 1.8.0
+      '@openagentpay/core':
+        specifier: workspace:*
+        version: link:../core
+      '@scure/base':
+        specifier: ^1.2.0
+        version: 1.2.6
+      '@scure/bip39':
+        specifier: ^1.4.0
+        version: 1.6.0
     devDependencies:
       '@openagentpay/conformance':
         specifier: workspace:*
@@ -1509,6 +1713,37 @@ importers:
         specifier: ^2.1.0
         version: 2.1.9(@types/node@22.19.19)
 
+  packages/wallet-sei:
+    dependencies:
+      '@noble/curves':
+        specifier: ^1.9.0
+        version: 1.9.1
+      '@noble/hashes':
+        specifier: ^1.8.0
+        version: 1.8.0
+      '@openagentpay/core':
+        specifier: workspace:*
+        version: link:../core
+      '@scure/base':
+        specifier: ^1.2.0
+        version: 1.2.6
+      '@scure/bip32':
+        specifier: ^1.7.0
+        version: 1.7.0
+      '@scure/bip39':
+        specifier: ^1.6.0
+        version: 1.6.0
+    devDependencies:
+      '@openagentpay/conformance':
+        specifier: workspace:*
+        version: link:../conformance
+      typescript:
+        specifier: ^5.5.0
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.0
+        version: 2.1.9(@types/node@22.19.19)
+
   packages/wallet-solana:
     dependencies:
       '@noble/curves':
@@ -1629,6 +1864,31 @@ importers:
         version: 2.1.9(@types/node@22.19.19)
 
   packages/wallet-ton:
+    dependencies:
+      '@noble/curves':
+        specifier: ^1.9.0
+        version: 1.9.1
+      '@noble/hashes':
+        specifier: ^1.8.0
+        version: 1.8.0
+      '@openagentpay/core':
+        specifier: workspace:*
+        version: link:../core
+      '@scure/base':
+        specifier: ^1.2.0
+        version: 1.2.6
+    devDependencies:
+      '@openagentpay/conformance':
+        specifier: workspace:*
+        version: link:../conformance
+      typescript:
+        specifier: ^5.5.0
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.0
+        version: 2.1.9(@types/node@22.19.19)
+
+  packages/wallet-ton-mainnet:
     dependencies:
       '@noble/curves':
         specifier: ^1.9.0
