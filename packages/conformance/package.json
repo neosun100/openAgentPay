@@ -19,6 +19,10 @@
       "import": "./dist/protocol.js",
       "types": "./dist/protocol.d.ts"
     },
+    "./compose": {
+      "import": "./dist/compose.js",
+      "types": "./dist/compose.d.ts"
+    },
     "./package.json": "./package.json"
   },
   "files": ["dist", "src", "README.md"],

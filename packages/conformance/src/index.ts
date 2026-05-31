@@ -37,4 +37,11 @@ export {
   type ProtocolConformanceOptions,
 } from "./protocol.js";
 
+export {
+  runCompositionConformance,
+  type CompositionAdapter,
+  type CompositionConformanceFixture,
+  type CompositionConformanceOptions,
+} from "./compose.js";
+
 export { CONFORMANCE_VERSION } from "./version.js";
