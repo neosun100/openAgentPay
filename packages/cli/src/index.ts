@@ -14,7 +14,11 @@ export {
   cmdConfigShow,
   cmdDoctor,
   cmdConformance,
+  cmdSessionCreate,
+  cmdSessionShow,
+  cmdPay,
   cmdVersion,
   type Command,
   type CommandContext,
 } from "./commands/index.js";
+export { parseAmount, AmountParseError, DEFAULT_DECIMALS } from "./commands/amount.js";

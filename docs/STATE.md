@@ -12,17 +12,19 @@
 
 ---
 
-## 📊 Current state (post-v0.16.0 · last working session 2026-05-31)
+## 📊 Current state (post-v0.17.0 · last working session 2026-06-01)
 
 ```
-Tests:        3722 passing     (TS 3601 + Python 52 + Go 35 + Java 16 + Rust 18)   ← was 666 at v0.10 (5.6×)
-Packages:     118               (116 pnpm packages + 2 apps; + sdks/go + sdks/java + sdks/rust)
+Tests:        3814 passing     (TS 3656 + Python 89 + Go 35 + Java 16 + Rust 18)   ← was 666 at v0.10 (5.7×)
+Packages:     120               (118 pnpm packages + 2 apps; + sdks/go + sdks/java + sdks/rust)
 Protocols:    19 ProtocolAdapters  ← A2A capability discovery; all conformance-green + composition v3
-Wallets:      58 WalletConnectors   ← +Movement/Initia/Ronin/Sonic/Stacks/Berachain-mainnet
+Wallets:      58 WalletConnectors   ← Movement/Initia/Ronin/Sonic/Stacks/Berachain-mainnet
 SDKs:         6 languages — TS + Python + Go + Java + Rust full HTTP clients + in-process core
 L2 on-chain:  Stellar + Aptos + Sui funded via public faucets (pnpm l2:verify, 3/3)
-Frameworks:   30 plugins             (25 TS + 5 Python)  ← +openai-swarm/google-adk/letta/agentscope/crewai-flows
+Frameworks:   32 plugins             (25 TS + 7 Python)  ← +bedrock-agentcore/instructor
 Certifier:    @openagentpay/certifier — HMAC-signed ConformanceCertificate + reusable certify.yml
+CLI:          oap config/doctor/conformance/version + pay/session/audit (B3/B9)
+Audit sinks:  InMemory · Console · DynamoDB · S3-WORM (Object-Lock COMPLIANCE, SOX/MRM)
 Layers:        L0 CLI · L1 Plugin · L2 Orchestration · L3 Protocol · L4 Wallet · L5 Settlement
 Live URL:     https://d1p7yxa99nxaye.cloudfront.net  (AWS us-east-1)
 CI:           .github/workflows/ci.yml (build + test + conformance + python) + certify.yml

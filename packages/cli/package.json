@@ -26,7 +26,8 @@
   },
   "dependencies": {
     "@openagentpay/core": "workspace:*",
-    "@openagentpay/config": "workspace:*"
+    "@openagentpay/config": "workspace:*",
+    "@openagentpay/governance": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

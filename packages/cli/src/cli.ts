@@ -10,6 +10,9 @@
  *   oap config show [path]
  *   oap doctor [path]
  *   oap conformance test [--package <path>]
+ *   oap session create [--budget <usd>] [--expiry <minutes>] [--config <path>]
+ *   oap session show <id> [--config <path>]
+ *   oap pay --to <recipient> --amount <1.5USDC> --wallet <provider> [--session <id>] [--config <path>]
  *   oap version
  *
  * Exit codes:
@@ -18,6 +21,8 @@
  *   2    invalid argv / unknown command
  *   3    config validation failure
  *   4    doctor failed
+ *   5    session not found
+ *   6    audit file not found / payment failed
  *
  * @license Apache-2.0
  */
@@ -46,6 +51,10 @@ Commands:
   config show [PATH]             Pretty-print effective config (with defaults applied)
   doctor [PATH]                  Health check: config + secrets + reachability of declared modules
   conformance test [--pkg DIR]   Run @openagentpay/conformance against a connector package
+  audit [--file FILE]            Read & filter an append-only audit log (JSONL)
+  session create [--budget USD] [--expiry MIN] [--config PATH]   Mint a payment session
+  session show <id> [--config PATH]                              Inspect a payment session
+  pay --to ADDR --amount 1.5USDC --wallet PROVIDER [--session ID] [--config PATH]   Execute a payment
   version                        Print version
 
 Examples:
@@ -53,6 +62,8 @@ Examples:
   oap config validate ./openagentpay.yaml
   oap doctor
   oap conformance test --pkg packages/wallet-hashkey
+  oap session create --budget 50 --expiry 120
+  oap pay --to 0xRecipient --amount 1.5USDC --wallet hashkey
 
 Issues / docs:
   https://github.com/neosun100/openAgentPay

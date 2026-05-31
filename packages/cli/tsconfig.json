@@ -6,5 +6,9 @@
     "composite": true
   },
   "include": ["src/**/*"],
-  "references": [{ "path": "../core" }, { "path": "../config" }]
+  "references": [
+    { "path": "../core" },
+    { "path": "../config" },
+    { "path": "../governance" }
+  ]
 }
