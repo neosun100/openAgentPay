@@ -1,0 +1,34 @@
+{
+  "name": "@openagentpay/wallet-linea",
+  "version": "0.1.0-alpha.0",
+  "description": "Linea Sepolia self-custodial EVM wallet connector for OpenAgentPay. Implements x402 / EIP-3009 transferWithAuthorization on Linea Sepolia (chainId 59141).",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": ["dist", "src"],
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist *.tsbuildinfo"
+  },
+  "dependencies": {
+    "@openagentpay/core": "workspace:*",
+    "viem": "^2.21.0"
+  },
+  "devDependencies": {
+    "@openagentpay/conformance": "workspace:*",
+    "vitest": "^2.1.0",
+    "typescript": "^5.5.0"
+  },
+  "keywords": ["linea", "linea-sepolia", "evm", "x402", "eip-3009", "wallet-connector"]
+}
