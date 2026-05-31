@@ -11,8 +11,8 @@
     "url": "https://github.com/neosun100/openAgentPay.git"
   },
   "engines": {
-    "node": ">=20",
-    "pnpm": ">=10"
+    "node": ">=22.13",
+    "pnpm": ">=11"
   },
   "packageManager": "pnpm@11.1.2",
   "workspaces": [
