@@ -8,6 +8,45 @@ working snapshot.
 
 ---
 
+## [0.13.0] · 2026-05-31 — **40 wallets · 15 frameworks · cross-protocol conformance v3**
+
+> **Headline**: the matrix widens on three axes at once — chains, agent
+> frameworks, and protocol-composition guarantees. 6 new chain connectors
+> (matrix 34 → 40), 5 new framework plugins (10 → 15), and a new
+> **composition conformance suite** proving AP2 mandate envelopes correctly
+> wrap inner settlement protocols.
+>
+> **Stats**: **40 wallet connectors · 18 protocols · 15 agent frameworks ·
+> 83 packages**, all conformance-green, zero failures.
+
+### Added — 6 chain connectors (matrix 34 → 40)
+
+`wallet-litecoin` (secp256k1 segwit tltc1q), `wallet-dogecoin` (legacy
+base58check P2PKH), `wallet-tezos` (Ed25519 tz1 + blake2b-160),
+`wallet-flow` (secp256k1, 8-byte address), `wallet-ripple` (Ed25519, XRPL
+custom-alphabet base58check r-address), `wallet-monero` (Ed25519 dual
+spend/view keys, view-key in metadata). All in-process real keypairs,
+conformance-green offline + LIVE.
+
+### Added — 5 framework plugins (10 → 15)
+
+Thin shims over the framework-agnostic `OpenAgentPayLlamaTool` kernel:
+`ai-sdk-v5-plugin` (Vercel AI SDK v5 tool()), `openai-agents-plugin`
+(OpenAI Agents function-tool), `voltagent-plugin`, `spinai-plugin`,
+`xsai-plugin`. Zero payment logic reimplemented — each just adapts the
+kernel to its framework's tool shape.
+
+### Added — cross-protocol composition conformance v3
+
+`runCompositionConformance` (`@openagentpay/conformance/compose`) proves
+the AP2 orthogonal-settlement design holds: a mandate envelope composes
+with x402 / cex-pay / solana-pay inner settlement. Asserts detect()
+independence, inner-`settlementProtocol` forwarding, allow-list rejection,
+and Intent→Cart→Payment chain validation. Wired into protocol-ap2 against
+the real adapter (now 55 tests: 13 conformance + 29 adapter + 13 composition).
+
+---
+
 ## [0.12.0] · 2026-05-31 — **Full client SDKs (TS + Python) + EVM L2 matrix**
 
 > **Headline**: the LiteLLM "client → proxy" half is now complete in **both
