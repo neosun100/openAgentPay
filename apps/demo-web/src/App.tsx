@@ -7,9 +7,17 @@ import { AiAgentTab } from "./AiAgentTab.js";
 import { GuardrailTab } from "./GuardrailTab.js";
 import { SpendAnalyticsTab } from "./SpendAnalyticsTab.js";
 import { WalletMatrixTab } from "./WalletMatrixTab.js";
+import { CertifyTab } from "./CertifyTab.js";
 import { api, type WalletEntry } from "./api.js";
 
-type TabId = "run" | "how" | "agent" | "guardrail" | "spend" | "matrix";
+type TabId =
+  | "run"
+  | "how"
+  | "agent"
+  | "guardrail"
+  | "spend"
+  | "matrix"
+  | "certify";
 
 /**
  * Roadmap chips — wallets we plan to add but haven't implemented yet.
@@ -200,6 +208,15 @@ export function App() {
             钱包 × 协议全景
           </div>
         </button>
+        <button
+          className={tab === "certify" ? "active" : ""}
+          onClick={() => setTab("certify")}
+        >
+          Certify 📜
+          <div style={{ fontSize: 11, color: "var(--fg-dim)", marginTop: 2 }}>
+            联邦合规认证
+          </div>
+        </button>
         {activeWallet && (
           <div className="tab-status">
             <span className="tab-status-pill">
@@ -226,6 +243,7 @@ export function App() {
         )}
         {tab === "spend" && <SpendAnalyticsTab />}
         {tab === "matrix" && <WalletMatrixTab />}
+        {tab === "certify" && <CertifyTab />}
       </main>
 
       <ActivityLog />

@@ -30,7 +30,8 @@
     "openagentpay"
   ],
   "dependencies": {
-    "@openagentpay/core": "workspace:*"
+    "@openagentpay/core": "workspace:*",
+    "@openagentpay/protocol-a2a-discovery": "workspace:*"
   },
   "devDependencies": {
     "@openagentpay/conformance": "workspace:*",

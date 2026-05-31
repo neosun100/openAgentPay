@@ -1,0 +1,30 @@
+{
+  "name": "@openagentpay/atomic-agents-plugin",
+  "version": "0.1.0-alpha.0",
+  "description": "Atomic Agents-style Tool integration for OpenAgentPay — schema-first agent tooling with autonomous payments.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": { "import": "./dist/index.js", "types": "./dist/index.d.ts" },
+    "./package.json": "./package.json"
+  },
+  "files": ["dist", "src"],
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist *.tsbuildinfo"
+  },
+  "keywords": ["atomic-agents", "openagentpay", "ai-agent", "payments", "x402", "ap2"],
+  "dependencies": {
+    "@openagentpay/core": "workspace:*",
+    "@openagentpay/llamaindex-plugin": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.0",
+    "vitest": "^2.1.0"
+  }
+}

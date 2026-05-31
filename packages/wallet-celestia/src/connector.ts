@@ -42,6 +42,7 @@ import {
   canonicalTransferDescriptor,
   CELESTIA_BECH32_PREFIX,
   TIA_DENOM,
+  USDC_DENOM,
 } from "./real-signer.js";
 
 // ============================================================================
@@ -53,8 +54,13 @@ export const WALLET_PROVIDER_ID = "celestia" as WalletProviderId;
 
 /** Canonical denom for the native TIA token (micro-TIA). */
 export const TIA_NATIVE_DENOM = TIA_DENOM;
+/** USDC denom on Celestia (micro-USDC). */
+export const USDC_NATIVE_DENOM = USDC_DENOM;
 
-const SUPPORTED_ASSETS: readonly Asset[] = [{ symbol: "TIA", decimals: 6 }];
+const SUPPORTED_ASSETS: readonly Asset[] = [
+  { symbol: "TIA", decimals: 6 },
+  { symbol: "USDC", decimals: 6 },
+];
 
 // ============================================================================
 //  InstrumentStore
@@ -157,13 +163,14 @@ export class CelestiaConnector implements WalletConnector {
   async getBalance(instrumentId: InstrumentId): Promise<Balance> {
     const inst = await this.requireInstrument(instrumentId);
     const atomic = await this.signer.getBalance(this.defaultDenom);
+    const symbol = this.defaultDenom === USDC_NATIVE_DENOM ? "USDC" : "TIA";
     return {
       instrumentId: inst.id,
-      asset: { symbol: "TIA", decimals: 6 },
+      asset: { symbol, decimals: 6 },
       money: {
         amountAtomic: atomic.toString(),
         decimals: 6,
-        currency: "TIA",
+        currency: symbol,
       },
       fetchedAt: nowIso(this.now()),
     };
@@ -267,6 +274,7 @@ export class CelestiaConnector implements WalletConnector {
   }
 
   private denomForAsset(symbol: string): string {
+    if (symbol === "USDC") return USDC_NATIVE_DENOM;
     if (symbol === "TIA") return TIA_NATIVE_DENOM;
     return this.defaultDenom;
   }

@@ -31,6 +31,7 @@ import {
   CELESTIA_HD_PATH,
   CELESTIA_BECH32_PREFIX,
   TIA_DENOM,
+  USDC_DENOM,
 } from "../src/index.js";
 
 const TEST_MNEMONIC =
@@ -117,11 +118,14 @@ describe("generateCelestiaWallet()", () => {
 // ---------------------------------------------------------------------------
 
 describe("getCapabilities()", () => {
-  it("reports the celestia provider + celestia-pay-v1 protocol + TIA", () => {
+  it("reports the celestia provider + celestia-pay-v1 protocol + TIA/USDC", () => {
     const caps = makeConnector().getCapabilities();
     expect(caps.walletProvider).toBe("celestia");
     expect(caps.supportedProtocols).toContain(PROTOCOL_ID);
-    expect(caps.supportedAssets.map((a) => a.symbol)).toEqual(["TIA"]);
+    expect(caps.supportedAssets.map((a) => a.symbol).sort()).toEqual([
+      "TIA",
+      "USDC",
+    ]);
     expect(caps.supportedAssets.every((a) => a.decimals <= 24)).toBe(true);
     expect(caps.settlesOnChain).toBe(true);
     expect((caps.features as Record<string, unknown>)["nonEvm"]).toBe(true);
@@ -236,6 +240,21 @@ describe("signAuthorization()", () => {
       session: buildSession(userId),
     });
     expect((signed.extra as Record<string, unknown>)["denom"]).toBe(TIA_DENOM);
+  });
+
+  it("routes USDC to the uusdc denom", async () => {
+    const c = makeConnector();
+    const userId = "usdc-user" as UserId;
+    const inst = await c.createInstrument({ userId });
+    const signed = await c.signAuthorization({
+      instrumentId: inst.id,
+      request: buildRequest({
+        asset: { symbol: "USDC", decimals: 6 },
+        amount: { amountAtomic: "5000", decimals: 6, currency: "USDC" },
+      }),
+      session: buildSession(userId),
+    });
+    expect((signed.extra as Record<string, unknown>)["denom"]).toBe(USDC_DENOM);
   });
 
   it("rejects a mismatched protocol", async () => {

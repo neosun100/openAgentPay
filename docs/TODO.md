@@ -188,7 +188,7 @@ I can do these without you needing to register anything.
 
 ```
 v0.11 wallet integration matrix:
-[████████████████████] 58 wallets · 32 frameworks · 6-language SDKs · 19 protocols + federated certifier    ✅ v0.17.0
+[████████████████████] 61 wallets · 35 frameworks · 6-lang SDKs (Go/Java in-proc) · 19 protocols + AP2 v0.2 A2A    ✅ v0.18.0
 
 v1.0 readiness (subjective):
 [██████████████████░░] 90%
@@ -203,5 +203,5 @@ v1.0 readiness (subjective):
 
 ---
 
-*Last updated: 2026-06-01 — v0.17.0 (3814 tests/5 langs, 58 wallets, 32 frameworks, oap pay/session/audit + S3-WORM audit sink)*
+*Last updated: 2026-06-01 — v0.18.0 (4030 tests/5 langs, 61 wallets, 35 frameworks, Go/Java in-process engines + AP2 v0.2 A2A + Certify tab)*
 *Update protocol: when a task moves status, update the row + bump the "Last updated" line.*

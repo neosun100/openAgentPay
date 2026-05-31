@@ -46,6 +46,8 @@ export const CELESTIA_HD_PATH = "m/44'/118'/0'/0/0";
 export const CELESTIA_BECH32_PREFIX = "celestia";
 /** Native token denom (micro-TIA). */
 export const TIA_DENOM = "utia";
+/** USDC denom on Celestia (micro-USDC; an IBC hash in production). */
+export const USDC_DENOM = "uusdc";
 
 // ============================================================================
 //  Wallet / keypair helpers
@@ -151,7 +153,7 @@ export interface RealCelestiaSignerConfig {
   readonly mnemonic?: string;
   /** bech32 prefix (default "celestia"). */
   readonly prefix?: string;
-  /** Chain id for explorer URLs / network labels (default "celestia"). */
+  /** Chain id for explorer URLs / network labels (default "mocha-4"). */
   readonly chainId?: string;
   /**
    * Optional balance reader — wired to a Celestia LCD/REST endpoint in
@@ -194,7 +196,7 @@ export class RealCelestiaSigner {
     this.publicKeyHex = kp.publicKeyHex;
     this.address = kp.address;
     this.prefix = prefix;
-    this.chainId = cfg.chainId ?? "celestia";
+    this.chainId = cfg.chainId ?? "mocha-4";
     this.cfg = cfg;
   }
 
@@ -271,7 +273,7 @@ export class RealCelestiaSigner {
   }
 
   private explorerUrl(txHash: string): string {
-    return `https://www.mintscan.io/celestia/txs/${txHash}`;
+    return `https://mocha.celenium.io/tx/${txHash}`;
   }
 }
 

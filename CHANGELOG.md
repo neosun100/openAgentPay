@@ -8,7 +8,53 @@ working snapshot.
 
 ---
 
-## [0.17.0] · 2026-06-01 — **`oap` pay/session/audit · S3-WORM audit · +2 Python plugins**
+## [0.18.0] · 2026-06-01 — **Go/Java in-process engines · AP2 v0.2 A2A · +3 chains · Certify tab**
+
+> **Headline**: a three-lane parallel sweep — the **Go & Java SDKs gain
+> in-process payment engines** (not just HTTP clients), **AP2 v0.2** adds
+> agent-to-agent mandate negotiation, three more chains land
+> (**61 connectors**), and the demo UI gets a **Certify tab** surfacing the
+> federated certifier.
+>
+> **Stats**: **3837 TS + 89 Python + 56 Go + 30 Java + 18 Rust = 4030 tests**
+> across 5 languages · 61 wallets · 19 protocols · 35 frameworks · 126 packages
+> · zero failures.
+
+### Added — Lane C: SDK in-process engines + AP2 v0.2
+
+- **Go SDK** (`sdks/go`): `Engine` + `MemorySessionStore` + `Connector`
+  interface + `ParseAmount` (atomic `big.Int`). Budget decrement + over-budget
+  rejection, no network. go test 35 → 56.
+- **Java SDK** (`sdks/java`): `com.openagentpay.sdk.engine.PaymentEngine` +
+  `Money.parse` (`BigInteger`) + `EngineException`. mvn 16 → 30 tests.
+- **AP2 v0.2** (`packages/protocol-ap2/src/a2a-v02.ts`): `Ap2V2Negotiator` —
+  agent-to-agent mandate negotiation over the existing AP2 flow (protocol/asset
+  intersection, priority-order winner, pluggable signature hook). +13 tests
+  (ap2 → 68).
+
+### Added — Lane Horizontal: +3 chains + 3 framework plugins
+
+- `wallet-fuel` (FuelVM, 49t) · `wallet-aleo` (bech32m `aleo1…`, 46t) ·
+  `wallet-starknet` (felt252, 46t). All conformance-green offline + LIVE.
+  `wallet-celestia` (Cosmos `mocha-4`) enhanced. Wallets 58 → 61.
+- `inngest-agentkit` · `atomic-agents` · `marvin` plugins — thin shims over the
+  `OpenAgentPayLlamaTool` kernel (`pydantic-graph` enhanced). Frameworks 32 → 35.
+
+### Added — Lane Quality-Depth: Certify tab + certifier e2e
+
+- **demo-web Certify tab** (7th tab) — surfaces the federated certifier with
+  example signed `ConformanceCertificate` cards + a self-certify `workflow_call`
+  snippet.
+- **certifier**: `runThirdPartyCertification()` end-to-end
+  (issue → sign → store → verify) + a `certifier-cli` bin. certifier 24 → 38.
+
+### Note on counts
+
+Two packages from earlier batches (`wallet-celestia`, `pydantic-graph-plugin`)
+were *enhanced* rather than newly created this round — hence net +3 wallets /
++3 plugins (verified against `origin/main`, not self-reported).
+
+
 
 > **Headline**: the `oap` CLI reaches **command-line payment parity** with
 > LiteLLM (`oap pay` / `oap session` / `oap audit`), audit logging gains a true

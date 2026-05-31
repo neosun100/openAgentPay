@@ -297,6 +297,22 @@ importers:
         specifier: ^2.1.0
         version: 2.1.9(@types/node@22.19.19)
 
+  packages/atomic-agents-plugin:
+    dependencies:
+      '@openagentpay/core':
+        specifier: workspace:*
+        version: link:../core
+      '@openagentpay/llamaindex-plugin':
+        specifier: workspace:*
+        version: link:../llamaindex-plugin
+    devDependencies:
+      typescript:
+        specifier: ^5.5.0
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.0
+        version: 2.1.9(@types/node@22.19.19)
+
   packages/cdk-deploy:
     dependencies:
       '@openagentpay/core':
@@ -530,6 +546,22 @@ importers:
         specifier: ^2.1.0
         version: 2.1.9(@types/node@22.19.19)
 
+  packages/inngest-agentkit-plugin:
+    dependencies:
+      '@openagentpay/core':
+        specifier: workspace:*
+        version: link:../core
+      '@openagentpay/llamaindex-plugin':
+        specifier: workspace:*
+        version: link:../llamaindex-plugin
+    devDependencies:
+      typescript:
+        specifier: ^5.5.0
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.0
+        version: 2.1.9(@types/node@22.19.19)
+
   packages/instructor-js-plugin:
     dependencies:
       '@openagentpay/core':
@@ -663,6 +695,22 @@ importers:
         specifier: ^2.1.0
         version: 2.1.9(@types/node@22.19.19)
 
+  packages/marvin-plugin:
+    dependencies:
+      '@openagentpay/core':
+        specifier: workspace:*
+        version: link:../core
+      '@openagentpay/llamaindex-plugin':
+        specifier: workspace:*
+        version: link:../llamaindex-plugin
+    devDependencies:
+      typescript:
+        specifier: ^5.5.0
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.0
+        version: 2.1.9(@types/node@22.19.19)
+
   packages/mastra-plugin:
     dependencies:
       '@openagentpay/core':
@@ -776,6 +824,9 @@ importers:
       '@openagentpay/core':
         specifier: workspace:*
         version: link:../core
+      '@openagentpay/protocol-a2a-discovery':
+        specifier: workspace:*
+        version: link:../protocol-a2a-discovery
     devDependencies:
       '@openagentpay/conformance':
         specifier: workspace:*
@@ -1197,6 +1248,31 @@ importers:
         specifier: workspace:*
         version: link:../llamaindex-plugin
     devDependencies:
+      typescript:
+        specifier: ^5.5.0
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.0
+        version: 2.1.9(@types/node@22.19.19)
+
+  packages/wallet-aleo:
+    dependencies:
+      '@noble/curves':
+        specifier: ^1.9.0
+        version: 1.9.1
+      '@noble/hashes':
+        specifier: ^1.8.0
+        version: 1.8.0
+      '@openagentpay/core':
+        specifier: workspace:*
+        version: link:../core
+      '@scure/base':
+        specifier: ^1.2.0
+        version: 1.2.6
+    devDependencies:
+      '@openagentpay/conformance':
+        specifier: workspace:*
+        version: link:../conformance
       typescript:
         specifier: ^5.5.0
         version: 5.9.3
@@ -1632,6 +1708,34 @@ importers:
       '@openagentpay/core':
         specifier: workspace:*
         version: link:../core
+    devDependencies:
+      '@openagentpay/conformance':
+        specifier: workspace:*
+        version: link:../conformance
+      typescript:
+        specifier: ^5.5.0
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.0
+        version: 2.1.9(@types/node@22.19.19)
+
+  packages/wallet-fuel:
+    dependencies:
+      '@noble/curves':
+        specifier: ^1.9.0
+        version: 1.9.1
+      '@noble/hashes':
+        specifier: ^1.8.0
+        version: 1.8.0
+      '@openagentpay/core':
+        specifier: workspace:*
+        version: link:../core
+      '@scure/base':
+        specifier: ^1.2.0
+        version: 1.2.6
+      '@scure/bip39':
+        specifier: ^1.5.0
+        version: 1.6.0
     devDependencies:
       '@openagentpay/conformance':
         specifier: workspace:*
@@ -2240,6 +2344,31 @@ importers:
       '@scure/bip39':
         specifier: ^1.5.0
         version: 1.6.0
+    devDependencies:
+      '@openagentpay/conformance':
+        specifier: workspace:*
+        version: link:../conformance
+      typescript:
+        specifier: ^5.5.0
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.0
+        version: 2.1.9(@types/node@22.19.19)
+
+  packages/wallet-starknet:
+    dependencies:
+      '@noble/curves':
+        specifier: ^1.9.0
+        version: 1.9.1
+      '@noble/hashes':
+        specifier: ^1.8.0
+        version: 1.8.0
+      '@openagentpay/core':
+        specifier: workspace:*
+        version: link:../core
+      '@scure/base':
+        specifier: ^1.2.0
+        version: 1.2.6
     devDependencies:
       '@openagentpay/conformance':
         specifier: workspace:*

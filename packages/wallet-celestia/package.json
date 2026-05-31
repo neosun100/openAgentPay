@@ -1,7 +1,7 @@
 {
   "name": "@openagentpay/wallet-celestia",
   "version": "0.1.0-alpha.0",
-  "description": "Celestia wallet connector for OpenAgentPay — secp256k1 + BIP39/BIP44 + bech32 (celestia1…), Cosmos-SDK modular-DA chain.",
+  "description": "Celestia (Cosmos-SDK) wallet connector for OpenAgentPay — secp256k1 + BIP39/BIP44 + bech32 (celestia1…), Mocha testnet proof-of-abstraction.",
   "license": "Apache-2.0",
   "type": "module",
   "main": "./dist/index.js",
@@ -18,7 +18,7 @@
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist *.tsbuildinfo"
   },
-  "keywords": ["celestia", "tia", "modular", "data-availability", "openagentpay", "non-evm", "secp256k1", "bech32"],
+  "keywords": ["celestia", "cosmos", "tia", "mocha", "openagentpay", "non-evm", "secp256k1", "bech32"],
   "dependencies": {
     "@openagentpay/core": "workspace:*",
     "@noble/curves": "^1.9.0",
