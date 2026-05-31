@@ -63,6 +63,14 @@ export type {
   AuditQueryResult,
 } from "./dynamodb-sink.js";
 
+// S3 WORM sink (Layer 7 immutable persistence — Object Lock COMPLIANCE mode)
+export { S3WormAuditSink, DEFAULT_WORM_RETENTION_DAYS } from "./s3-worm-sink.js";
+export type {
+  S3WormAuditSinkConfig,
+  S3ClientLike,
+  S3CommandFactories,
+} from "./s3-worm-sink.js";
+
 // Top-level facade
 export { GovernanceManager } from "./manager.js";
 export type {
