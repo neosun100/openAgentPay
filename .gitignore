@@ -83,3 +83,8 @@ oap-*.png
 # --- Claude Code local state (sessions/replay/notif state — never commit) ---
 .omc/
 **/.omc/
+
+# --- Go / Java SDK build artifacts ---
+sdks/go/bin/
+sdks/java/target/
+*.class
