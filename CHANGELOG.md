@@ -8,7 +8,56 @@ working snapshot.
 
 ---
 
-## [0.16.0] · 2026-05-31 — **58 wallets · 30 frameworks · federated certifier**
+## [0.17.0] · 2026-06-01 — **`oap` pay/session/audit · S3-WORM audit · +2 Python plugins**
+
+> **Headline**: the `oap` CLI reaches **command-line payment parity** with
+> LiteLLM (`oap pay` / `oap session` / `oap audit`), audit logging gains a true
+> **Write-Once-Read-Many S3 sink** (Object-Lock COMPLIANCE, SOX/MRM), and two
+> more Python framework plugins land (**32 frameworks**, 7 Python).
+>
+> **Stats**: **3656 TS + 89 Python + 35 Go + 16 Java + 18 Rust = 3814 tests**
+> across 5 languages · 58 wallets · 19 protocols · 32 frameworks · 120 packages
+> · zero failures.
+
+### Added — `oap pay` / `oap session` CLI (B3)
+
+- `oap session create [--budget <usd>] [--expiry <min>]` / `oap session show <id>`
+  — bootstraps an `InMemoryPaymentManager` from `openagentpay.yaml`.
+- `oap pay --to <addr> --amount 1.5USDC --wallet <provider> [--session <id>]`
+  — `parseAmount("1.5USDC") → { amountAtomic: "1500000", decimals: 6, currency:
+  "USDC" }`, then `processPayment`. Closes the `litellm pay` parity gap.
+- +27 tests.
+
+### Added — `oap audit` CLI (B9)
+
+`oap audit [--since YYYY-MM-DD] [--kind <k>] [--actor <id>] [--result <r>] [--json]`
+— JSONL reader applying the same AND-filter semantics as `InMemoryAuditSink.query`;
+human table or `--json`; exit 6 on missing file. +13 tests.
+
+### Added — S3 WORM AuditSink (B8)
+
+`S3WormAuditSink` (`packages/governance/src/s3-worm-sink.ts`) — PUTs each
+`AuditEvent` as an immutable S3 object with **Object Lock `COMPLIANCE` mode** +
+`RetainUntilDate = now + retentionDays` (default **2555 days ≈ 7 y** for SOX).
+COMPLIANCE mode means not even root can delete before retention expires — true
+WORM, vs mutable DynamoDB. Injectable client → 15 offline tests. governance
+68 → 83 tests.
+
+### Added — 2 Python framework plugins (30 → 32)
+
+- `openagentpay-bedrock-agentcore` — Path-D Hybrid framing (extends AgentCore,
+  never replaces); 19 tests.
+- `openagentpay-instructor` — Pydantic-typed payment tool for `instructor`
+  structured-output flows; 18 tests.
+- Both thin shims over the OpenAgentPay HTTP API (httpx + pydantic, respx-mocked).
+
+### Housekeeping
+
+- Marked **B4** (Python SDK full client — already a 396-line async
+  `OpenAgentPayClient` + 29 tests) and **B10** (Spend Analytics inline-SVG charts)
+  as ✅ done in `docs/TODO.md` after discovering both were already implemented.
+
+
 
 > **Headline**: the wallet matrix reaches **58 connectors** (+6 chains), agent
 > frameworks reach **30 plugins** (+5), and a new **federated conformance
