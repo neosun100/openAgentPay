@@ -8,7 +8,59 @@ working snapshot.
 
 ---
 
-## [0.15.0] · 2026-05-31 — **6-language SDKs · 52 wallets · 25 frameworks · A2A discovery**
+## [0.16.0] · 2026-05-31 — **58 wallets · 30 frameworks · federated certifier**
+
+> **Headline**: the wallet matrix reaches **58 connectors** (+6 chains), agent
+> frameworks reach **30 plugins** (+5), and a new **federated conformance
+> certifier** (`@openagentpay/certifier`) lets any third party self-certify a
+> wallet/protocol package and obtain an **HMAC-signed `ConformanceCertificate`**
+> via a reusable GitHub Actions workflow — the `oapconformance.io` engine.
+>
+> **Stats**: **3601 TS + 52 Python + 35 Go + 16 Java + 18 Rust = 3722 tests**
+> across 5 languages · 58 wallets · 19 protocols · 30 frameworks · 118 packages
+> · zero failures.
+
+### Added — 6 chain connectors (52 → 58)
+
+| Connector | Chain | Curve / scheme | Tests |
+|---|---|---|---|
+| `wallet-movement` | Movement (Aptos-compatible Move-VM L2) | Ed25519 | 66 |
+| `wallet-initia` | Initia (Cosmos-SDK, `init` bech32 hrp) | secp256k1 | 46 |
+| `wallet-ronin` | Ronin Saigon (EVM 2021) | EIP-3009 | 45 |
+| `wallet-sonic` | Sonic Blaze (EVM 57054) | offline EIP-712 | 45 |
+| `wallet-stacks` | Stacks (Bitcoin L2) | secp256k1 + hand-rolled c32check | 48 |
+| `wallet-berachain-mainnet` | Berachain (EVM 80094) | EIP-3009 | 46 |
+
+All 6 conformance-green **offline AND under `OPENAGENTPAY_LIVE_TESTS=true`**; each
+generates a real in-process keypair (no signups). Wired into `demo-api`
+self-contained bundles (**37 live wallets** now served by `/api/wallets`) and the
+`demo-web` capability matrix.
+
+### Added — 5 framework plugins (25 → 30)
+
+`@openagentpay/{openai-swarm,google-adk,letta,agentscope,crewai-flows}-plugin` —
+each a thin shim over the `OpenAgentPayLlamaTool` kernel (zero reimplemented
+payment logic), exposing the framework's native tool shape (Swarm function /
+ADK FunctionTool / Letta `json_schema`+`execute` / AgentScope ServiceToolkit /
+CrewAI `@tool`). 21 tests total.
+
+### Added — federated conformance certifier (`@openagentpay/certifier`)
+
+- `ConformanceCertificate` — `id` (urn:uuid), `subject`, `subjectKind`
+  (`wallet`|`protocol`), `suiteVersion`, `result {passed,skipped,total,allPassed}`,
+  `issuer`, optional HMAC `signature` (ProofValue).
+- `issueCertificate()` **derives & validates** `allPassed` — never trusts a
+  caller-supplied flag; throws on mismatch / empty subject / zero tests.
+- `signCertificateHmac`/`verifyCertificateHmac` mirror core's receipt HMAC exactly
+  (canonical sorted-key JSON, `timingSafeEqual`).
+- `InMemoryCertificateRegistry` — issue/get/list/revoke (soft-revoke retained for
+  audit).
+- **`.github/workflows/certify.yml`** — reusable `workflow_call` so a third-party
+  repo self-certifies a wallet/protocol in one line and emits a verifiable badge.
+- 24 tests. This is the Linux-Foundation-style play: the ecosystem grows its own
+  connectors instead of us hand-writing each one.
+
+
 
 > **Headline**: a Rust SDK brings the client matrix to **6 languages**, the
 > wallet matrix hits **52 connectors**, agent frameworks reach **25 plugins**,

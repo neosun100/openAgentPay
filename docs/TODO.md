@@ -189,14 +189,14 @@ I can do these without you needing to register anything.
 
 ```
 v0.11 wallet integration matrix:
-[████████████████████] 52 wallets · 25 frameworks · 6-language SDKs · 19 protocols + A2A discovery    ✅ v0.15.0
+[████████████████████] 58 wallets · 30 frameworks · 6-language SDKs · 19 protocols + federated certifier    ✅ v0.16.0
 
 v1.0 readiness (subjective):
 [██████████████████░░] 90%
    - Core abstractions: 100%
    - Wallet coverage:   90%   ← was the biggest gap, now closed
    - Protocol coverage: 95%   (+ protocol conformance v2)
-   - Plugin coverage:   80%
+   - Plugin coverage:   85%
    - Productization:    95%   (refund/subscription/receipt/interceptor)
    - Compliance/gov:    80%
    - CI/CD:             100%  (was 0%)
@@ -204,5 +204,5 @@ v1.0 readiness (subjective):
 
 ---
 
-*Last updated: 2026-05-31 — v0.15.0 (3381 tests/5 langs, 52 wallets, 25 frameworks, Rust SDK + A2A discovery)*
+*Last updated: 2026-05-31 — v0.16.0 (3722 tests/5 langs, 58 wallets, 30 frameworks, federated certifier + certify.yml)*
 *Update protocol: when a task moves status, update the row + bump the "Last updated" line.*
