@@ -136,3 +136,19 @@ jobs:
       - name: Maven test
         working-directory: sdks/java
         run: mvn -q -B test
+
+  # ---------------------------------------------------------------------------
+  #  Rust SDK — cargo build + test (sdks/rust, outside the JS workspace)
+  # ---------------------------------------------------------------------------
+  rust-sdk:
+    name: Rust SDK (cargo test)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+      - name: Build + test
+        working-directory: sdks/rust
+        run: |
+          cargo build
+          cargo test

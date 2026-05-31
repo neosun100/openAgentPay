@@ -88,3 +88,4 @@ oap-*.png
 sdks/go/bin/
 sdks/java/target/
 *.class
+sdks/rust/target/

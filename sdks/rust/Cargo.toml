@@ -1,0 +1,20 @@
+[package]
+name = "openagentpay"
+version = "0.1.0"
+edition = "2021"
+description = "Rust remote HTTP client for OpenAgentPay — the client→proxy half of the LiteLLM analogy for crypto agent payments."
+license = "Apache-2.0"
+repository = "https://github.com/neosun100/openAgentPay"
+readme = "README.md"
+keywords = ["payments", "crypto", "agent", "x402", "usdc"]
+categories = ["api-bindings", "web-programming::http-client"]
+
+[dependencies]
+reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+thiserror = "1"
+
+[dev-dependencies]
+tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
+wiremock = "0.6"

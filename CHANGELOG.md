@@ -8,6 +8,50 @@ working snapshot.
 
 ---
 
+## [0.15.0] · 2026-05-31 — **6-language SDKs · 52 wallets · 25 frameworks · A2A discovery**
+
+> **Headline**: a Rust SDK brings the client matrix to **6 languages**, the
+> wallet matrix hits **52 connectors**, agent frameworks reach **25 plugins**,
+> and protocol layer v4 adds **A2A capability discovery** (agents discover each
+> other's payment capabilities before transacting).
+>
+> **Stats**: **3260 TS + 52 Python + 35 Go + 16 Java + 18 Rust = 3381 tests**
+> across 5 languages · 52 wallets · 19 protocols · 25 frameworks · 106 packages
+> · zero failures.
+
+### Added — Rust SDK (`sdks/rust`)
+
+`openagentpay` crate — async `reqwest` client (json + rustls), serde-typed,
+`thiserror` error enum. `OpenAgentPayClient` with create_session/pay/
+get_session/list_wallets/get_governance/get_audit/pay_once. 17 wiremock async
+tests + 1 doctest, cargo build/test/clippy clean.
+
+### Added — protocol layer v4: A2A capability discovery (19th protocol)
+
+`@openagentpay/protocol-a2a-discovery` — agents publish an `AgentPaymentCard`
+(accepted protocols/assets/wallets, spend limits, DID) and a counterparty
+`negotiate()`s the intersection to pick a settlement, or rejects on no overlap.
+`A2aDiscoveryAdapter` (detect/parse/buildRetry) + pluggable signature hook +
+spend-limit enforcement. 28 tests. This is the Google AP2 agent-to-agent
+discovery model — the foundation for an agent payment marketplace.
+
+### Added — 6 chain connectors (matrix 46 → 52)
+
+`wallet-near-mainnet`, `wallet-tron-mainnet`, `wallet-scroll`, `wallet-mantle`,
+`wallet-blast`, `wallet-mode`. Conformance-green offline + LIVE.
+
+### Added — 5 framework plugins (20 → 25)
+
+`dspy`, `instructor-js`, `llama-stack`, `cloudflare-agents`, `mcp-tool`
+(the last lets any MCP host pay via OpenAgentPay).
+
+### CI
+
+Added `rust-sdk` (cargo build + test) job — now 6 CI gates: TS, conformance,
+Python, Go, Java, Rust.
+
+---
+
 ## [0.14.0] · 2026-05-31 — **5 SDK languages · 46 wallets · 20 frameworks**
 
 > **Headline**: OpenAgentPay now ships full client SDKs in **5 languages**
