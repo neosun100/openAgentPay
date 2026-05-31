@@ -32,10 +32,10 @@ OpenAgentPay = **"LiteLLM for Crypto Agent Payments."** Unified abstraction over
 
 ```
 L0 CLI       — `oap` (config/doctor/conformance) + `oap-proxy` (yaml-driven)
-L1 Plugin    — 15 frameworks (10 TS + 5 Python)
+L1 Plugin    — 20 frameworks (15 TS + 5 Python)
 L2 Orchestration — PaymentManager + ProtocolRouter + WalletRouter + finance + Guardrail
 L3 Protocol  — 18 ProtocolAdapters
-L4 Wallet    — 40 WalletConnectors (v0.13.0 ✅; 31 live in demo)
+L4 Wallet    — 46 WalletConnectors (v0.14.0 ✅; 31 live in demo)
 L5 Settlement — chain RPC / CEX REST / Solana RPC / IBC / Hedera Mirror
 ```
 
@@ -44,13 +44,13 @@ L5 Settlement — chain RPC / CEX REST / Solana RPC / IBC / Hedera Mirror
 ## 📊 Current state (snapshot — re-verify with `pnpm -r test`)
 
 ```
-Tests: 2658 passing (TS 2606 + Python 52)
-Packages: 85 (83 packages + 2 apps)
-Wallets: 40 connectors (31 live in demo)
+Tests: 3025 passing (TS 2922 + Python 52 + Go 35 + Java 16)
+Packages: 96 (94 pnpm packages + 2 apps; + sdks/go + sdks/java)
+Wallets: 46 connectors (31 live in demo)
 Protocols: 18 adapters (all 18 conformance-green + composition v3)
-Frameworks: 15 plugins (10 TS + 5 Python)
-SDKs: @openagentpay/sdk (TS) + openagentpay (Python) — full remote HTTP clients
-Latest version: v0.13.0 (shipped 2026-05-31)
+Frameworks: 20 plugins (15 TS + 5 Python)
+SDKs: 5 languages — TS + Python + Go + Java HTTP clients + in-process core
+Latest version: v0.14.0 (shipped 2026-05-31)
 Live URL: https://d1p7yxa99nxaye.cloudfront.net
 CI: .github/workflows/ci.yml
 ```
