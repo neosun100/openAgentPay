@@ -84,6 +84,12 @@ importers:
       '@openagentpay/wallet-aptos':
         specifier: workspace:*
         version: link:../../packages/wallet-aptos
+      '@openagentpay/wallet-arbitrum':
+        specifier: workspace:*
+        version: link:../../packages/wallet-arbitrum
+      '@openagentpay/wallet-base':
+        specifier: workspace:*
+        version: link:../../packages/wallet-base
       '@openagentpay/wallet-bitcoin':
         specifier: workspace:*
         version: link:../../packages/wallet-bitcoin
@@ -117,6 +123,9 @@ importers:
       '@openagentpay/wallet-hedera':
         specifier: workspace:*
         version: link:../../packages/wallet-hedera
+      '@openagentpay/wallet-linea':
+        specifier: workspace:*
+        version: link:../../packages/wallet-linea
       '@openagentpay/wallet-magic':
         specifier: workspace:*
         version: link:../../packages/wallet-magic
@@ -126,9 +135,15 @@ importers:
       '@openagentpay/wallet-okx':
         specifier: workspace:*
         version: link:../../packages/wallet-okx
+      '@openagentpay/wallet-optimism':
+        specifier: workspace:*
+        version: link:../../packages/wallet-optimism
       '@openagentpay/wallet-polkadot':
         specifier: workspace:*
         version: link:../../packages/wallet-polkadot
+      '@openagentpay/wallet-polygon':
+        specifier: workspace:*
+        version: link:../../packages/wallet-polygon
       '@openagentpay/wallet-solana':
         specifier: workspace:*
         version: link:../../packages/wallet-solana
@@ -153,12 +168,18 @@ importers:
       '@openagentpay/wallet-zerodev':
         specifier: workspace:*
         version: link:../../packages/wallet-zerodev
+      '@openagentpay/wallet-zksync':
+        specifier: workspace:*
+        version: link:../../packages/wallet-zksync
       cors:
         specifier: ^2.8.5
         version: 2.8.6
       express:
         specifier: ^4.21.0
         version: 4.22.2
+      viem:
+        specifier: ^2.21.0
+        version: 2.49.3(typescript@5.9.3)(zod@3.25.76)
     devDependencies:
       '@types/aws-lambda':
         specifier: ^8.10.145

@@ -131,6 +131,37 @@ import {
   generateBybitKeypair,
   MemoryInstrumentStore as BybitStore,
 } from "@openagentpay/wallet-bybit";
+import { generatePrivateKey } from "viem/accounts";
+import {
+  BaseSepoliaConnector,
+  BASE_SEPOLIA_USDC,
+  MemoryInstrumentStore as BaseStore,
+} from "@openagentpay/wallet-base";
+import {
+  ArbitrumConnector,
+  ARBITRUM_SEPOLIA_USDC,
+  MemoryInstrumentStore as ArbitrumStore,
+} from "@openagentpay/wallet-arbitrum";
+import {
+  OptimismConnector,
+  OP_SEPOLIA_USDC,
+  MemoryInstrumentStore as OptimismStore,
+} from "@openagentpay/wallet-optimism";
+import {
+  PolygonAmoyConnector,
+  POLYGON_AMOY_USDC,
+  MemoryInstrumentStore as PolygonStore,
+} from "@openagentpay/wallet-polygon";
+import {
+  ZkSyncConnector,
+  ZKSYNC_SEPOLIA_USDC,
+  MemoryInstrumentStore as ZkSyncStore,
+} from "@openagentpay/wallet-zksync";
+import {
+  LineaConnector,
+  LINEA_SEPOLIA_USDC,
+  MemoryInstrumentStore as LineaStore,
+} from "@openagentpay/wallet-linea";
 
 // ----------------------------------------------------------------------------
 //  Bundle helper — fills ConnectorBundle metadata for a self-contained wallet
@@ -698,6 +729,141 @@ export function buildSelfContainedBundles(): ConnectorBundle[] {
         tokenDecimals: 6,
         addressExplorer: (a) => `https://www.bybit.com/user/assets/${a}`,
         txExplorer: (h) => `https://www.bybit.com/user/assets/order/${h}`,
+      })
+    );
+  }
+
+  // --- Base Sepolia (self-custodial EVM L2, x402 USDC) ---
+  {
+    const connector = new BaseSepoliaConnector({
+      privateKey: generatePrivateKey(),
+      tokenAddress: BASE_SEPOLIA_USDC,
+      instrumentStore: new BaseStore(),
+    });
+    bundles.push(
+      bundleOf({
+        connector,
+        agentAddress: connector.agentAddress,
+        chainName: "Base Sepolia",
+        chainId: 84532,
+        tokenLabel: "USDC",
+        tokenAddress: BASE_SEPOLIA_USDC,
+        tokenDecimals: 6,
+        addressExplorer: (a) => `https://sepolia.basescan.org/address/${a}`,
+        txExplorer: (h) => `https://sepolia.basescan.org/tx/${h}`,
+      })
+    );
+  }
+
+  // --- Arbitrum Sepolia (self-custodial EVM L2, x402 USDC) ---
+  {
+    const connector = new ArbitrumConnector({
+      privateKey: generatePrivateKey(),
+      tokenAddress: ARBITRUM_SEPOLIA_USDC,
+      instrumentStore: new ArbitrumStore(),
+    });
+    bundles.push(
+      bundleOf({
+        connector,
+        agentAddress: connector.agentAddress,
+        chainName: "Arbitrum Sepolia",
+        chainId: 421614,
+        tokenLabel: "USDC",
+        tokenAddress: ARBITRUM_SEPOLIA_USDC,
+        tokenDecimals: 6,
+        addressExplorer: (a) => `https://sepolia.arbiscan.io/address/${a}`,
+        txExplorer: (h) => `https://sepolia.arbiscan.io/tx/${h}`,
+      })
+    );
+  }
+
+  // --- Optimism Sepolia (self-custodial EVM L2, x402 USDC) ---
+  {
+    const connector = new OptimismConnector({
+      privateKey: generatePrivateKey(),
+      tokenAddress: OP_SEPOLIA_USDC,
+      instrumentStore: new OptimismStore(),
+    });
+    bundles.push(
+      bundleOf({
+        connector,
+        agentAddress: connector.agentAddress,
+        chainName: "Optimism Sepolia",
+        chainId: 11155420,
+        tokenLabel: "USDC",
+        tokenAddress: OP_SEPOLIA_USDC,
+        tokenDecimals: 6,
+        addressExplorer: (a) =>
+          `https://optimism-sepolia.blockscout.com/address/${a}`,
+        txExplorer: (h) =>
+          `https://optimism-sepolia.blockscout.com/tx/${h}`,
+      })
+    );
+  }
+
+  // --- Polygon Amoy (self-custodial EVM L2, x402 USDC) ---
+  {
+    const connector = new PolygonAmoyConnector({
+      privateKey: generatePrivateKey(),
+      tokenAddress: POLYGON_AMOY_USDC,
+      instrumentStore: new PolygonStore(),
+    });
+    bundles.push(
+      bundleOf({
+        connector,
+        agentAddress: connector.agentAddress,
+        chainName: "Polygon Amoy",
+        chainId: 80002,
+        tokenLabel: "USDC",
+        tokenAddress: POLYGON_AMOY_USDC,
+        tokenDecimals: 6,
+        addressExplorer: (a) => `https://amoy.polygonscan.com/address/${a}`,
+        txExplorer: (h) => `https://amoy.polygonscan.com/tx/${h}`,
+      })
+    );
+  }
+
+  // --- zkSync Era Sepolia (self-custodial EVM L2, x402 USDC) ---
+  {
+    const connector = new ZkSyncConnector({
+      privateKey: generatePrivateKey(),
+      tokenAddress: ZKSYNC_SEPOLIA_USDC,
+      instrumentStore: new ZkSyncStore(),
+    });
+    bundles.push(
+      bundleOf({
+        connector,
+        agentAddress: connector.agentAddress,
+        chainName: "zkSync Era Sepolia",
+        chainId: 300,
+        tokenLabel: "USDC",
+        tokenAddress: ZKSYNC_SEPOLIA_USDC,
+        tokenDecimals: 6,
+        addressExplorer: (a) =>
+          `https://sepolia.explorer.zksync.io/address/${a}`,
+        txExplorer: (h) => `https://sepolia.explorer.zksync.io/tx/${h}`,
+      })
+    );
+  }
+
+  // --- Linea Sepolia (self-custodial EVM L2, x402 USDC) ---
+  {
+    const connector = new LineaConnector({
+      privateKey: generatePrivateKey(),
+      tokenAddress: LINEA_SEPOLIA_USDC,
+      instrumentStore: new LineaStore(),
+    });
+    bundles.push(
+      bundleOf({
+        connector,
+        agentAddress: connector.agentAddress,
+        chainName: "Linea Sepolia",
+        chainId: 59141,
+        tokenLabel: "USDC",
+        tokenAddress: LINEA_SEPOLIA_USDC,
+        tokenDecimals: 6,
+        addressExplorer: (a) => `https://sepolia.lineascan.build/address/${a}`,
+        txExplorer: (h) => `https://sepolia.lineascan.build/tx/${h}`,
       })
     );
   }

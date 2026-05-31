@@ -43,9 +43,16 @@
     "@openagentpay/wallet-okx": "workspace:*",
     "@openagentpay/wallet-bitget": "workspace:*",
     "@openagentpay/wallet-bybit": "workspace:*",
+    "@openagentpay/wallet-base": "workspace:*",
+    "@openagentpay/wallet-arbitrum": "workspace:*",
+    "@openagentpay/wallet-optimism": "workspace:*",
+    "@openagentpay/wallet-polygon": "workspace:*",
+    "@openagentpay/wallet-zksync": "workspace:*",
+    "@openagentpay/wallet-linea": "workspace:*",
     "@openagentpay/governance": "workspace:*",
     "@aws-sdk/client-dynamodb": "^3.700.0",
-    "@aws-sdk/lib-dynamodb": "^3.700.0"
+    "@aws-sdk/lib-dynamodb": "^3.700.0",
+    "viem": "^2.21.0"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.145",
