@@ -1,0 +1,29 @@
+{
+  "name": "@openagentpay/http-interceptor",
+  "version": "0.1.0-alpha.0",
+  "description": "Dependency-light HTTP 402 retry interceptor — wraps fetch/axios to auto-retry payment-required responses for OpenAgentPay.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": { "import": "./dist/index.js", "types": "./dist/index.d.ts" },
+    "./package.json": "./package.json"
+  },
+  "files": ["dist", "src"],
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist *.tsbuildinfo"
+  },
+  "keywords": ["x402", "http-402", "fetch", "axios", "openagentpay", "interceptor"],
+  "dependencies": {
+    "@openagentpay/core": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.0",
+    "vitest": "^2.1.0"
+  }
+}

@@ -11,8 +11,8 @@
     "url": "https://github.com/neosun100/openAgentPay.git"
   },
   "engines": {
-    "node": ">=20",
-    "pnpm": ">=10"
+    "node": ">=22.13",
+    "pnpm": ">=11"
   },
   "packageManager": "pnpm@11.1.2",
   "workspaces": [
@@ -31,7 +31,8 @@
     "demo:web": "pnpm --filter @openagentpay/demo-web dev",
     "demo": "concurrently -n api,web -c \"#a18cd1\",\"#fbc2eb\" \"pnpm demo:api\" \"pnpm demo:web\"",
     "smoke:e2e": "node --experimental-strip-types --no-warnings scripts/smoke-e2e.ts",
-    "smoke:e2e:prod": "node --experimental-strip-types --no-warnings scripts/smoke-e2e.ts https://d1p7yxa99nxaye.cloudfront.net"
+    "smoke:e2e:prod": "node --experimental-strip-types --no-warnings scripts/smoke-e2e.ts https://d1p7yxa99nxaye.cloudfront.net",
+    "l2:verify": "tsx scripts/l2-faucet-verify.ts"
   },
   "devDependencies": {
     "@openagentpay/core": "workspace:*",

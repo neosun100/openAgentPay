@@ -23,5 +23,8 @@
   "dependencies": {
     "@openagentpay/core": "workspace:*"
   },
+  "devDependencies": {
+    "@openagentpay/conformance": "workspace:*"
+  },
   "keywords": ["oap", "cex-pay", "protocol-adapter"]
 }

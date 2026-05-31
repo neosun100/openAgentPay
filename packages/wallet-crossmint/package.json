@@ -1,0 +1,32 @@
+{
+  "name": "@openagentpay/wallet-crossmint",
+  "version": "0.1.0-alpha.0",
+  "description": "Crossmint NFT-aware embedded EVM wallet connector for OpenAgentPay — apiKey+projectId-keyed agent wallet, real EIP-712 EIP-3009 signing (x402-v1, USDC on Base Sepolia).",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": { "import": "./dist/index.js", "types": "./dist/index.d.ts" },
+    "./package.json": "./package.json"
+  },
+  "files": ["dist", "src"],
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist *.tsbuildinfo"
+  },
+  "keywords": ["crossmint", "embedded-wallet", "nft", "openagentpay", "evm", "base-sepolia", "eip3009", "x402"],
+  "dependencies": {
+    "@openagentpay/core": "workspace:*",
+    "@noble/hashes": "^1.8.0",
+    "viem": "^2.21.0"
+  },
+  "devDependencies": {
+    "@openagentpay/conformance": "workspace:*",
+    "typescript": "^5.5.0",
+    "vitest": "^2.1.0"
+  }
+}

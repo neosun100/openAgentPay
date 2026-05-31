@@ -20,6 +20,12 @@
   --red: #ef4444;
   --blue: #3b82f6;
   --yellow: #facc15;
+
+  /* Aliases used by SpendAnalyticsTab / WalletMatrixTab inline styles */
+  --bd: #334155;
+  --bd-faint: #1e293b;
+  --bg-elev: #1e293b;
+  --font-mono: "SF Mono", Monaco, Consolas, monospace;
 }
 
 * {
@@ -963,4 +969,151 @@ nav.tabs {
   color: #fda4af;
   font-style: italic;
   font-size: 10px;
+}
+
+/* ============================================================================
+ *  Wallet × Protocol Matrix tab
+ * ============================================================================ */
+
+.tab-matrix .matrix-stat {
+  font-size: 13px;
+  color: var(--fg-dim);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+}
+.matrix-stat-num {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--hashkey);
+}
+.matrix-stat-sep { color: var(--fg-faint); }
+
+.matrix-scroll {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg-2);
+}
+
+.matrix-table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 12px;
+}
+
+.matrix-table th,
+.matrix-table td {
+  border-bottom: 1px solid var(--bd-faint);
+  text-align: center;
+  padding: 8px 6px;
+}
+
+.matrix-table thead th {
+  position: sticky;
+  top: 0;
+  background: var(--bg-3);
+  color: var(--fg);
+  font-weight: 600;
+  z-index: 1;
+}
+
+.matrix-th-wallet { text-align: left; padding-left: 14px; min-width: 150px; }
+.matrix-th-chain  { text-align: left; min-width: 110px; color: var(--fg-dim); }
+.matrix-th-proto  { min-width: 64px; }
+.matrix-th-proto-text {
+  display: inline-block;
+  font-size: 10px;
+  letter-spacing: 0.2px;
+  color: var(--fg-dim);
+  white-space: nowrap;
+}
+
+.matrix-td-wallet {
+  text-align: left;
+  padding-left: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.matrix-td-chain {
+  text-align: left;
+  color: var(--fg-dim);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  white-space: nowrap;
+}
+.matrix-td-empty { color: var(--fg-faint); }
+.matrix-td-on-live { background: rgba(48, 209, 88, 0.06); }
+.matrix-td-on-roadmap { background: transparent; }
+
+.matrix-row-live:hover { background: rgba(192, 132, 252, 0.05); }
+.matrix-row-roadmap { opacity: 0.55; }
+.matrix-row-roadmap .matrix-td-wallet { color: var(--fg-dim); font-weight: 500; }
+
+.matrix-row-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #30d158;
+  box-shadow: 0 0 6px #30d158;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.matrix-cell-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #86efac;
+  font-weight: 700;
+}
+.matrix-cell-roadmap {
+  color: var(--fg-faint);
+  font-weight: 600;
+}
+.matrix-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #30d158;
+  display: inline-block;
+}
+
+/* ============================================================================
+ *  Spend Analytics — v2 charts
+ * ============================================================================ */
+
+.spend-chart-card {
+  padding: 14px 16px;
+  border: 1px solid var(--bd-faint);
+  border-radius: 8px;
+  background: var(--bg-elev);
+}
+.spend-chart-title {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--fg-dim);
+  margin-bottom: 12px;
+}
+.spend-bar-track {
+  height: 8px;
+  border-radius: 4px;
+  background: rgba(148, 163, 184, 0.12);
+  overflow: hidden;
+}
+.spend-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.4s ease;
+}
+
+@media (max-width: 900px) {
+  .spend-charts { grid-template-columns: 1fr !important; }
 }

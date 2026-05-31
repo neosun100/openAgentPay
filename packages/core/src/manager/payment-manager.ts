@@ -25,11 +25,13 @@ import {
   type CreateSessionInput,
   type Instrument,
   type InstrumentId,
+  type Money,
   type PaymentRequest,
   type Session,
   type SessionId,
   type SettlementResult,
   type SignedAuthorization,
+  type TransactionRef,
   type UserId,
   type WalletConnector,
   type WalletProviderId,
@@ -38,6 +40,11 @@ import {
   InMemorySessionManager,
   type SessionManager,
 } from "../session/manager.js";
+import type {
+  RefundExecutor,
+  RefundRequest,
+  RefundResult,
+} from "../finance/types.js";
 
 // ============================================================================
 //  Public API surface
@@ -102,6 +109,17 @@ export interface PaymentManager {
    */
   processPayment(input: ProcessPaymentInput): Promise<ProcessPaymentOutput>;
 
+  /**
+   * Refund a prior settled payment. Validates against an in-memory ledger of
+   * settled payments (populated by {@link PaymentManager.processPayment}):
+   *   - original_not_found   if the originalTransactionRef is unknown
+   *   - exceeds_original     if amount + already-refunded > original amount
+   *   - already_refunded     if the same idempotencyKey was seen before
+   *   - not_supported        if no RefundExecutor is wired
+   *   - else delegates to the configured RefundExecutor.
+   */
+  refund(req: RefundRequest): Promise<RefundResult>;
+
   // ---- Connector registry (OpenAgentPay extension) -------------------------
 
   /** Register a wallet connector. Multiple connectors keyed by walletProvider. */
@@ -143,6 +161,8 @@ export interface InMemoryPaymentManagerConfig {
   readonly sessionManager?: SessionManager;
   /** Function to look up an Instrument by id. */
   readonly resolveInstrument: (id: InstrumentId) => Promise<Instrument | undefined>;
+  /** Optional pluggable refund backend. If absent, refund() returns not_supported. */
+  readonly refundExecutor?: RefundExecutor;
 }
 
 /**
@@ -153,10 +173,16 @@ export class InMemoryPaymentManager implements PaymentManager {
   private readonly connectors = new Map<string, WalletConnector>();
   private readonly sessionManager: SessionManager;
   private readonly resolveInstrument: (id: InstrumentId) => Promise<Instrument | undefined>;
+  private readonly refundExecutor: RefundExecutor | undefined;
+  /** transactionRef → settled-payment ledger entry (for refund validation). */
+  private readonly settlementLedger = new Map<string, SettlementLedgerEntry>();
+  /** scoped idempotencyKey → prior RefundResult (idempotent refunds). */
+  private readonly refundIdempotency = new Map<string, RefundResult>();
 
   constructor(config: InMemoryPaymentManagerConfig) {
     this.sessionManager = config.sessionManager ?? new InMemorySessionManager();
     this.resolveInstrument = config.resolveInstrument;
+    this.refundExecutor = config.refundExecutor;
   }
 
   // ---- Resource creation ----------------------------------------------------
@@ -266,6 +292,14 @@ export class InMemoryPaymentManager implements PaymentManager {
       settlement.success
     );
 
+    // 6b. Record successful settlements into the refund ledger.
+    if (settlement.success && settlement.transactionRef !== undefined) {
+      this.settlementLedger.set(settlement.transactionRef, {
+        amount: settlement.settledAmount ?? input.request.amount,
+        refundedAtomic: 0n,
+      });
+    }
+
     // Note: signed has `extra` which can have an undefined value. Strip it
     // to avoid TS exactOptionalPropertyTypes complaining about the optional
     // shape difference.
@@ -276,6 +310,81 @@ export class InMemoryPaymentManager implements PaymentManager {
       sessionAfter,
     };
   }
+
+  // ---- Refund ---------------------------------------------------------------
+
+  async refund(req: RefundRequest): Promise<RefundResult> {
+    // 1. Idempotency: replay prior result for a repeated (ref, key) pair.
+    const idemKey =
+      req.idempotencyKey !== undefined
+        ? `${req.originalTransactionRef}:${req.idempotencyKey}`
+        : undefined;
+    if (idemKey !== undefined) {
+      const prior = this.refundIdempotency.get(idemKey);
+      if (prior) {
+        return prior.success
+          ? prior
+          : { ...prior, errorCode: "already_refunded" };
+      }
+    }
+
+    // 2. Original must exist in the settlement ledger.
+    const entry = this.settlementLedger.get(req.originalTransactionRef);
+    if (!entry) {
+      return {
+        success: false,
+        errorCode: "original_not_found",
+        errorMessage: `No settled payment for ${req.originalTransactionRef}`,
+      };
+    }
+
+    // 3. Currency must match the original settlement.
+    if (req.amount.currency !== entry.amount.currency) {
+      return {
+        success: false,
+        errorCode: "exceeds_original",
+        errorMessage: `Refund currency ${req.amount.currency} != original ${entry.amount.currency}`,
+      };
+    }
+
+    // 4. Refund amount + already-refunded must not exceed the original.
+    const want = BigInt(req.amount.amountAtomic);
+    const original = BigInt(entry.amount.amountAtomic);
+    if (want < 0n || entry.refundedAtomic + want > original) {
+      return {
+        success: false,
+        errorCode: "exceeds_original",
+        errorMessage: `Refund ${want} + prior ${entry.refundedAtomic} > original ${original}`,
+      };
+    }
+
+    // 5. Must have a refund backend wired.
+    if (!this.refundExecutor) {
+      return {
+        success: false,
+        errorCode: "not_supported",
+        errorMessage: "No RefundExecutor configured on this PaymentManager",
+      };
+    }
+
+    // 6. Delegate to the executor.
+    const result = await this.refundExecutor.refund(req);
+
+    // 7. On success, advance the refunded tally and cache for idempotency.
+    if (result.success) {
+      entry.refundedAtomic += want;
+    }
+    if (idemKey !== undefined) {
+      this.refundIdempotency.set(idemKey, result);
+    }
+    return result;
+  }
+}
+
+/** Internal ledger row tracking how much of a settled payment is refundable. */
+interface SettlementLedgerEntry {
+  readonly amount: Money;
+  refundedAtomic: bigint;
 }
 
 // ============================================================================
@@ -290,11 +399,17 @@ export function createInMemoryPaymentManager(opts: {
   resolveInstrument: (id: InstrumentId) => Promise<Instrument | undefined>;
   sessionManager?: SessionManager;
   connectors?: readonly WalletConnector[];
+  refundExecutor?: RefundExecutor;
 }): InMemoryPaymentManager {
-  const config: InMemoryPaymentManagerConfig =
-    opts.sessionManager === undefined
-      ? { resolveInstrument: opts.resolveInstrument }
-      : { resolveInstrument: opts.resolveInstrument, sessionManager: opts.sessionManager };
+  const config: InMemoryPaymentManagerConfig = {
+    resolveInstrument: opts.resolveInstrument,
+    ...(opts.sessionManager !== undefined
+      ? { sessionManager: opts.sessionManager }
+      : {}),
+    ...(opts.refundExecutor !== undefined
+      ? { refundExecutor: opts.refundExecutor }
+      : {}),
+  };
   const mgr = new InMemoryPaymentManager(config);
   for (const c of opts.connectors ?? []) {
     mgr.registerConnector(c);

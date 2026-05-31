@@ -15,4 +15,4 @@ export * from "./session/dynamodb-manager.js";
 export * from "./manager/payment-manager.js";
 export * from "./router/protocol-router.js";
 export * from "./router/wallet-router.js";
-export * from "./finance/types.js";
+export * from "./finance/index.js";

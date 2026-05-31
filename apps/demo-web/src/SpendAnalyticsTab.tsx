@@ -30,6 +30,8 @@ interface Aggregate {
   byActor: Map<string, { count: number; usd: number }>;
   byKind: Map<string, number>;
   txHashes: ReadonlyArray<{ ts: string; tx: string; chain: string; usd: number }>;
+  /** Cumulative spend over time (ordered oldest → newest) for the sparkline. */
+  spendSeries: ReadonlyArray<{ t: number; cumUsd: number }>;
 }
 
 function aggregate(events: ReadonlyArray<AuditEventLite>): Aggregate {
@@ -40,6 +42,8 @@ function aggregate(events: ReadonlyArray<AuditEventLite>): Aggregate {
   const byActor = new Map<string, { count: number; usd: number }>();
   const byKind = new Map<string, number>();
   const txHashes: Array<{ ts: string; tx: string; chain: string; usd: number }> = [];
+  // Collect (timestamp, usd) of every successful payment for the time series.
+  const points: Array<{ t: number; usd: number }> = [];
 
   for (const e of events) {
     byKind.set(e.kind, (byKind.get(e.kind) ?? 0) + 1);
@@ -68,8 +72,17 @@ function aggregate(events: ReadonlyArray<AuditEventLite>): Aggregate {
           usd,
         });
       }
+      const t = Date.parse(e.timestamp);
+      if (!Number.isNaN(t)) points.push({ t, usd });
     }
   }
+  // Build cumulative spend series (oldest → newest).
+  points.sort((a, b) => a.t - b.t);
+  let cum = 0;
+  const spendSeries = points.map((p) => {
+    cum += p.usd;
+    return { t: p.t, cumUsd: cum };
+  });
   return {
     totalEvents: events.length,
     successfulPayments: successful,
@@ -79,6 +92,7 @@ function aggregate(events: ReadonlyArray<AuditEventLite>): Aggregate {
     byActor,
     byKind,
     txHashes: txHashes.slice(-30).reverse(),
+    spendSeries,
   };
 }
 
@@ -212,6 +226,26 @@ export function SpendAnalyticsTab(): JSX.Element {
           value={agg.byWallet.size.toString()}
           sub={`${agg.byActor.size} unique actors`}
         />
+      </section>
+
+      {/* Charts (hand-rolled inline SVG — no chart lib) */}
+      <section
+        style={{
+          display: "grid",
+          gridTemplateColumns: "1.4fr 1fr",
+          gap: 12,
+          marginBottom: 24,
+        }}
+        className="spend-charts"
+      >
+        <div className="spend-chart-card">
+          <div className="spend-chart-title">Cumulative spend</div>
+          <Sparkline series={agg.spendSeries} />
+        </div>
+        <div className="spend-chart-card">
+          <div className="spend-chart-title">Spend by wallet</div>
+          <WalletShareBars byWallet={agg.byWallet} total={agg.totalUsd} />
+        </div>
       </section>
 
       {/* By-wallet breakdown */}
@@ -399,6 +433,180 @@ function KpiCard({ label, value, sub, tone }: KpiProps): JSX.Element {
           {sub}
         </div>
       )}
+    </div>
+  );
+}
+
+// ----------------------------------------------------------------------------
+//  Charts — hand-rolled inline SVG (no chart library)
+// ----------------------------------------------------------------------------
+
+/** A cumulative-spend sparkline with an area fill. */
+function Sparkline({
+  series,
+}: {
+  readonly series: ReadonlyArray<{ t: number; cumUsd: number }>;
+}): JSX.Element {
+  const W = 420;
+  const H = 120;
+  const PAD = 6;
+
+  if (series.length === 0) {
+    return <EmptyChart w={W} h={H} label="No spend yet" />;
+  }
+
+  const tMin = series[0]!.t;
+  const tMax = series[series.length - 1]!.t;
+  const tSpan = tMax - tMin || 1;
+  const maxUsd = series[series.length - 1]!.cumUsd || 1;
+
+  const x = (t: number): number =>
+    PAD + ((t - tMin) / tSpan) * (W - 2 * PAD);
+  const y = (v: number): number =>
+    H - PAD - (v / maxUsd) * (H - 2 * PAD);
+
+  // For a single point, draw a flat baseline to its value.
+  const pts =
+    series.length === 1
+      ? [
+          { px: PAD, py: y(series[0]!.cumUsd) },
+          { px: W - PAD, py: y(series[0]!.cumUsd) },
+        ]
+      : series.map((s) => ({ px: x(s.t), py: y(s.cumUsd) }));
+
+  const line = pts.map((p) => `${p.px.toFixed(1)},${p.py.toFixed(1)}`).join(" ");
+  const area = `${PAD},${H - PAD} ${line} ${(W - PAD).toFixed(1)},${H - PAD}`;
+  const last = pts[pts.length - 1]!;
+
+  return (
+    <div>
+      <svg
+        viewBox={`0 0 ${W} ${H}`}
+        width="100%"
+        height={H}
+        preserveAspectRatio="none"
+        role="img"
+        aria-label="Cumulative spend over time"
+      >
+        <defs>
+          <linearGradient id="spendGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#30d158" stopOpacity="0.35" />
+            <stop offset="100%" stopColor="#30d158" stopOpacity="0" />
+          </linearGradient>
+        </defs>
+        <polygon points={area} fill="url(#spendGrad)" />
+        <polyline
+          points={line}
+          fill="none"
+          stroke="#30d158"
+          strokeWidth="2"
+          strokeLinejoin="round"
+          strokeLinecap="round"
+        />
+        <circle cx={last.px} cy={last.py} r="3.5" fill="#30d158" />
+      </svg>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          fontSize: 11,
+          color: "var(--fg-dim)",
+          marginTop: 4,
+          fontFamily: "var(--font-mono)",
+        }}
+      >
+        <span>${"0.00"}</span>
+        <span>{series.length} payments</span>
+        <span>${maxUsd.toFixed(2)}</span>
+      </div>
+    </div>
+  );
+}
+
+const SHARE_COLORS = [
+  "#c084fc",
+  "#30d158",
+  "#60a5fa",
+  "#fbbf24",
+  "#f472b6",
+  "#22d3ee",
+  "#a3e635",
+];
+
+/** Horizontal stacked-share bars: spend per wallet as % of total. */
+function WalletShareBars({
+  byWallet,
+  total,
+}: {
+  readonly byWallet: Map<string, { count: number; usd: number }>;
+  readonly total: number;
+}): JSX.Element {
+  const rows = [...byWallet.entries()].sort((a, b) => b[1].usd - a[1].usd);
+  if (rows.length === 0 || total <= 0) {
+    return <EmptyChart w={300} h={120} label="No spend yet" />;
+  }
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+      {rows.map(([wp, v], i) => {
+        const pct = (v.usd / total) * 100;
+        const color = SHARE_COLORS[i % SHARE_COLORS.length]!;
+        return (
+          <div key={wp}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                fontSize: 11,
+                marginBottom: 3,
+              }}
+            >
+              <span style={{ color: "var(--fg)" }}>{wp}</span>
+              <span style={{ color: "var(--fg-dim)", fontFamily: "var(--font-mono)" }}>
+                {pct.toFixed(0)}% · ${v.usd.toFixed(2)}
+              </span>
+            </div>
+            <div className="spend-bar-track">
+              <div
+                className="spend-bar-fill"
+                style={{
+                  width: `${Math.max(pct, 1.5)}%`,
+                  background: color,
+                }}
+              />
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+/** Centered "no data" placeholder matching the dark theme. */
+function EmptyChart({
+  w,
+  h,
+  label,
+}: {
+  readonly w: number;
+  readonly h: number;
+  readonly label: string;
+}): JSX.Element {
+  return (
+    <div
+      style={{
+        height: h,
+        minWidth: Math.min(w, 200),
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        color: "var(--fg-dim)",
+        fontSize: 13,
+        border: "1px dashed var(--bd-faint)",
+        borderRadius: 6,
+      }}
+    >
+      {label}
     </div>
   );
 }

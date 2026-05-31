@@ -1,0 +1,33 @@
+{
+  "name": "@openagentpay/wallet-aptos",
+  "version": "0.1.0-alpha.0",
+  "description": "Aptos wallet connector + protocol adapter for OpenAgentPay — Ed25519 / Move-VM non-EVM proof-of-abstraction.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": { "import": "./dist/index.js", "types": "./dist/index.d.ts" },
+    "./package.json": "./package.json"
+  },
+  "files": ["dist", "src"],
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist *.tsbuildinfo"
+  },
+  "keywords": ["aptos", "aptos-pay", "openagentpay", "non-evm", "ed25519", "move"],
+  "dependencies": {
+    "@openagentpay/core": "workspace:*",
+    "@noble/curves": "^1.9.0",
+    "@noble/hashes": "^1.8.0",
+    "@scure/base": "^1.2.0"
+  },
+  "devDependencies": {
+    "@openagentpay/conformance": "workspace:*",
+    "typescript": "^5.5.0",
+    "vitest": "^2.1.0"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "name": "@openagentpay/wallet-stellar",
+  "version": "0.1.0-alpha.0",
+  "description": "Stellar (SEP-31) wallet connector for OpenAgentPay — Ed25519 StrKey identities, real cryptographic signing, no SDK dependency.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": { "import": "./dist/index.js", "types": "./dist/index.d.ts" },
+    "./package.json": "./package.json"
+  },
+  "files": ["dist", "src"],
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist *.tsbuildinfo"
+  },
+  "keywords": ["stellar", "sep31", "openagentpay", "non-evm", "ed25519", "strkey", "xlm"],
+  "dependencies": {
+    "@openagentpay/core": "workspace:*",
+    "@noble/curves": "^1.9.0",
+    "@noble/hashes": "^1.8.0",
+    "@scure/base": "^1.2.0"
+  },
+  "devDependencies": {
+    "@openagentpay/conformance": "workspace:*",
+    "typescript": "^5.5.0",
+    "vitest": "^2.1.0"
+  }
+}

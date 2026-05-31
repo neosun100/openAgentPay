@@ -1,0 +1,35 @@
+{
+  "name": "@openagentpay/wallet-cosmos",
+  "version": "0.1.0-alpha.0",
+  "description": "Cosmos (IBC) wallet connector for OpenAgentPay — secp256k1 + BIP39/BIP44 + bech32, non-EVM proof-of-abstraction.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": { "import": "./dist/index.js", "types": "./dist/index.d.ts" },
+    "./package.json": "./package.json"
+  },
+  "files": ["dist", "src"],
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist *.tsbuildinfo"
+  },
+  "keywords": ["cosmos", "ibc", "atom", "openagentpay", "non-evm", "secp256k1", "bech32"],
+  "dependencies": {
+    "@openagentpay/core": "workspace:*",
+    "@noble/curves": "^1.9.0",
+    "@noble/hashes": "^1.8.0",
+    "@scure/base": "^1.2.0",
+    "@scure/bip32": "^1.7.0",
+    "@scure/bip39": "^1.6.0"
+  },
+  "devDependencies": {
+    "@openagentpay/conformance": "workspace:*",
+    "typescript": "^5.5.0",
+    "vitest": "^2.1.0"
+  }
+}

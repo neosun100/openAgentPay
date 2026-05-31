@@ -1,0 +1,34 @@
+{
+  "name": "@openagentpay/wallet-okx",
+  "version": "0.1.0-alpha.0",
+  "description": "OKX Pay (CEX) wallet connector for OpenAgentPay. HMAC-SHA256, 3-piece OKX-style credentials.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": ["dist", "src"],
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist *.tsbuildinfo"
+  },
+  "dependencies": {
+    "@openagentpay/core": "workspace:*",
+    "@openagentpay/protocol-cex-pay": "workspace:*"
+  },
+  "devDependencies": {
+    "@openagentpay/conformance": "workspace:*",
+    "typescript": "^5.5.0",
+    "vitest": "^2.1.0"
+  },
+  "keywords": ["okx", "okx-pay", "cex", "wallet-connector"]
+}

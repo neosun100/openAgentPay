@@ -33,6 +33,7 @@
     "@openagentpay/core": "workspace:*"
   },
   "devDependencies": {
+    "@openagentpay/conformance": "workspace:*",
     "typescript": "^5.5.0",
     "vitest": "^2.1.0"
   }

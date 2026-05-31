@@ -1,0 +1,101 @@
+name: CI
+
+on:
+  push:
+    branches: ["main", "feat/**", "fix/**"]
+  pull_request:
+    branches: ["main"]
+
+# Cancel superseded runs on the same ref.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ---------------------------------------------------------------------------
+  #  TypeScript: build + test every workspace package
+  # ---------------------------------------------------------------------------
+  typescript:
+    name: TypeScript (build + test)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Build (all packages)
+        run: pnpm -r build
+
+      - name: Test (all packages)
+        run: pnpm -r test
+
+  # ---------------------------------------------------------------------------
+  #  Conformance gate: every wallet package MUST pass the 25-test suite,
+  #  both offline AND under OPENAGENTPAY_LIVE_TESTS (exercises sign+settle).
+  # ---------------------------------------------------------------------------
+  conformance:
+    name: Wallet conformance (offline + LIVE)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Build conformance + wallet packages
+        run: pnpm -r build
+
+      - name: Conformance (offline)
+        run: |
+          pnpm -r --filter "@openagentpay/wallet-*" test
+
+      - name: Conformance (LIVE — in-process signers, no network creds)
+        env:
+          OPENAGENTPAY_LIVE_TESTS: "true"
+        run: |
+          pnpm -r --filter "@openagentpay/wallet-*" test
+
+  # ---------------------------------------------------------------------------
+  #  Python: pytest across every plugin (isolated per-package, mirrors local dev)
+  # ---------------------------------------------------------------------------
+  python:
+    name: Python (pytest)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Setup Python
+        run: uv python install 3.12
+
+      - name: Test all plugins (isolated)
+        run: |
+          set -e
+          for pkg in strands-plugin autogen-plugin crewai-plugin semantic-kernel-plugin pydantic-ai-plugin; do
+            echo "::group::pytest $pkg"
+            ( cd "packages/$pkg" && uv run --no-project --with . --with pytest --with pytest-asyncio --with pytest-mock --with respx python -m pytest tests/ -q )
+            echo "::endgroup::"
+          done

@@ -310,6 +310,18 @@ async function _buildContext(): Promise<AppContext> {
     connectors.set(cdp.walletProvider, cdp);
   }
 
+  // Build the 11 self-contained v0.11 connectors (no creds needed — each
+  // generates a real testnet keypair in-process). These make the demo-web
+  // capability bar show the full multi-chain matrix out of the box.
+  const { buildSelfContainedBundles } = await import(
+    "./self-contained-wallets.js"
+  );
+  for (const bundle of buildSelfContainedBundles()) {
+    if (!connectors.has(bundle.walletProvider)) {
+      connectors.set(bundle.walletProvider, bundle);
+    }
+  }
+
   if (connectors.size === 0) {
     throw new Error(
       "No wallet connectors configured — set HASHKEY_* or COINBASE_CDP_* env vars"

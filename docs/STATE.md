@@ -12,21 +12,29 @@
 
 ---
 
-## 📊 Current state (post-v0.10.0 · last working session 2026-05-27)
+## 📊 Current state (post-v0.11.1 · last working session 2026-05-31)
 
 ```
-Tests:        668 passing      (TS 614 + Python 54)
-Packages:     40                (37 TS + 5 Python + 1 cdk + 2 apps + python-sdk)
-Protocols:    18 ProtocolAdapters
-Wallets:       6 WalletConnectors    ← BIGGEST GAP, today's focus
+Tests:        2045 passing     (TS 1993 + Python 52)   ← was 666 at v0.10 (3.07×)
+Packages:     65                (was 40)
+Protocols:    18 ProtocolAdapters  ← ALL 18 conformance-green (was 5)
+Wallets:      28 WalletConnectors   ← 25 live in demo /api/wallets
+L2 on-chain:  Stellar + Aptos funded via public faucets (pnpm l2:verify)
 Frameworks:   10 plugins             (5 TS + 5 Python)
 Layers:        L0 CLI · L1 Plugin · L2 Orchestration · L3 Protocol · L4 Wallet · L5 Settlement
 Live URL:     https://d1p7yxa99nxaye.cloudfront.net  (AWS us-east-1)
+CI:           .github/workflows/ci.yml (build + test + conformance + python)
 ```
 
-**The whole pipeline (build + test + lint + 7-Layer Guardrail + DynamoDB persistence + multi-tenant proxy + yaml config + CLI) is green and production-shaped.**
+**v0.11 shipped the wallet matrix**: 11 new connectors (Solana real-signer +
+Stellar/Hedera/Sui/Aptos/TRON/Cosmos + Stripe-Privy/Circle/Magic/ZeroDev), each
+conformance-green offline AND under `OPENAGENTPAY_LIVE_TESTS`. Every connector
+generates a **real testnet keypair in-process** — no signups needed. Plus:
+financial primitives productized (refund/subscription/receipt), HTTP auto-402
+interceptor, GitHub Actions CI, and protocol-level conformance v2.
 
-What's left is mostly the long-tail: real third-party wallet integrations and minor polish.
+What's left is mostly the long-tail: funding the generated testnet keypairs to
+land real on-chain txs (Lane A faucets), and Lane C ecosystem expansion.
 
 ---
 

@@ -29,3 +29,14 @@ export {
   type SolanaSigner,
   type InstrumentStore,
 } from "./connector.js";
+
+export {
+  // Real Ed25519 signer (production-shaped — no @solana/web3.js needed for signing)
+  RealSolanaSigner,
+  generateSolanaKeypair,
+  keypairFromSeed,
+  keypairFromBase58,
+  canonicalTransferDescriptor,
+  type SolanaKeypair,
+  type RealSolanaSignerConfig,
+} from "./real-signer.js";

@@ -6,11 +6,19 @@ import { HowItWorksTab } from "./HowItWorksTab.js";
 import { AiAgentTab } from "./AiAgentTab.js";
 import { GuardrailTab } from "./GuardrailTab.js";
 import { SpendAnalyticsTab } from "./SpendAnalyticsTab.js";
+import { WalletMatrixTab } from "./WalletMatrixTab.js";
 import { api, type WalletEntry } from "./api.js";
 
-type TabId = "run" | "how" | "agent" | "guardrail" | "spend";
+type TabId = "run" | "how" | "agent" | "guardrail" | "spend" | "matrix";
 
-/** Roadmap chips — wallets we plan to add but haven't implemented yet. */
+/**
+ * Roadmap chips — wallets we plan to add but haven't implemented yet.
+ *
+ * NOTE: providers now served live by /api/wallets (solana, stellar, sui, aptos,
+ * tron, cosmos, stripe-privy, circle, magic, zerodev, hedera, …) have been
+ * removed from this list — they render automatically from `availableWallets`.
+ * Only genuinely-future wallets remain here.
+ */
 const ROADMAP_WALLETS: ReadonlyArray<{
   id: string;
   label: string;
@@ -25,19 +33,13 @@ const ROADMAP_WALLETS: ReadonlyArray<{
   { id: "safe", label: "Safe (multi-sig)", chain: "EVM", protocol: "x402", category: "evm" },
 
   // Managed / institutional
-  { id: "stripe-privy", label: "Stripe Privy", chain: "Base", protocol: "x402", category: "managed" },
   { id: "fireblocks", label: "Fireblocks", chain: "EVM", protocol: "x402", category: "managed" },
-  { id: "magic", label: "Magic.link", chain: "EVM", protocol: "x402", category: "managed" },
   { id: "crossmint", label: "Crossmint", chain: "EVM", protocol: "x402", category: "managed" },
 
   // Non-EVM chains
-  { id: "solana-pay", label: "Solana Pay", chain: "Solana", protocol: "Solana Pay", category: "non-evm" },
-  { id: "sui-pay", label: "Sui Pay", chain: "Sui", protocol: "Sui Pay", category: "non-evm" },
-  { id: "stellar", label: "Stellar", chain: "Stellar", protocol: "SEP-29", category: "non-evm" },
   { id: "lightning", label: "Lightning Network", chain: "BTC", protocol: "LN-402", category: "non-evm" },
 
   // CEX (OAP-CEX)
-  { id: "binance-pay", label: "Binance Pay", chain: "CEX", protocol: "OAP-CEX", category: "cex" },
   { id: "okx-pay", label: "OKX Pay", chain: "CEX", protocol: "OAP-CEX", category: "cex" },
   { id: "bitget", label: "Bitget Wallet", chain: "CEX", protocol: "OAP-CEX", category: "cex" },
   { id: "bybit", label: "Bybit Pay", chain: "CEX", protocol: "OAP-CEX", category: "cex" },
@@ -189,6 +191,15 @@ export function App() {
             实时花费分析
           </div>
         </button>
+        <button
+          className={tab === "matrix" ? "active" : ""}
+          onClick={() => setTab("matrix")}
+        >
+          Matrix 🔗
+          <div style={{ fontSize: 11, color: "var(--fg-dim)", marginTop: 2 }}>
+            钱包 × 协议全景
+          </div>
+        </button>
         {activeWallet && (
           <div className="tab-status">
             <span className="tab-status-pill">
@@ -214,6 +225,7 @@ export function App() {
           <GuardrailTab walletProvider={walletProvider} />
         )}
         {tab === "spend" && <SpendAnalyticsTab />}
+        {tab === "matrix" && <WalletMatrixTab />}
       </main>
 
       <ActivityLog />

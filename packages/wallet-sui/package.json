@@ -1,0 +1,33 @@
+{
+  "name": "@openagentpay/wallet-sui",
+  "version": "0.1.0-alpha.0",
+  "description": "Sui wallet connector for OpenAgentPay — Ed25519 + blake2b address derivation, real offline signing, sui-pay-v1.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": { "import": "./dist/index.js", "types": "./dist/index.d.ts" },
+    "./package.json": "./package.json"
+  },
+  "files": ["dist", "src"],
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist *.tsbuildinfo"
+  },
+  "keywords": ["sui", "sui-pay", "openagentpay", "non-evm", "ed25519", "blake2b"],
+  "dependencies": {
+    "@openagentpay/core": "workspace:*",
+    "@noble/curves": "^1.9.0",
+    "@noble/hashes": "^1.8.0",
+    "@scure/base": "^1.2.0"
+  },
+  "devDependencies": {
+    "@openagentpay/conformance": "workspace:*",
+    "typescript": "^5.5.0",
+    "vitest": "^2.1.0"
+  }
+}

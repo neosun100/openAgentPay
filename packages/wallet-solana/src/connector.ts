@@ -385,6 +385,9 @@ export class SolanaConnector implements WalletConnector {
   }
 
   async createInstrument(input: CreateInstrumentInput): Promise<Instrument> {
+    if (!input.userId) {
+      throw new Error("createInstrument: userId is required");
+    }
     const existing = await this.store.get(input.userId);
     if (existing) return existing;
     const id = `payment-instrument-solana-${input.userId}` as InstrumentId;

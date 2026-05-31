@@ -12,10 +12,10 @@
 | Release | Theme | Dates | Status |
 |---|---|---|---|
 | v0.10 | LiteLLM-shape product complete | shipped 2026-05-24 | ✅ |
-| **v0.11** | **Wallet matrix: ≥1 real wallet per protocol** | **target 2026 mid-Q3** | 🚧 in progress |
-| v0.12 | Refund/Subscription/Receipt productization | 2026 Q3 | 📅 planned |
+| **v0.11** | **Wallet matrix: 6 → 28 connectors + 18/18 protocol conformance** | shipped 2026-05-31 | ✅ |
+| v0.12 | Refund/Subscription/Receipt productization | 2026 Q3 | ✅ pulled into v0.11 (core primitives) |
 | v0.13 | Multi-language SDKs (Python full / Go / Java) | 2026 Q3-Q4 | 📅 planned |
-| v0.14 | OAP-CEX 2nd impl + AP2 v0.2 + ERC-8004 v2 | 2026 Q4 | 📅 planned |
+| v0.14 | OAP-CEX 2nd impl + AP2 v0.2 + ERC-8004 v2 | 2026 Q4 | 🚧 protocol conformance v2 done in v0.11 |
 | v0.15 | Federated conformance, public certifier dashboard | 2027 Q1 | 📅 planned |
 | v0.16 | Anomaly detection + ML-based spend anomalies | 2027 Q1 | 📅 planned |
 | **v1.0 GA** | **Production-ready, mainnet-blessed, SOC-2 path** | 2027 Q2 | 🎯 |

@@ -165,7 +165,8 @@ export function runWalletConformance(
           expect(typeof a.symbol).toBe("string");
           expect(typeof a.decimals).toBe("number");
           expect(a.decimals).toBeGreaterThanOrEqual(0);
-          expect(a.decimals).toBeLessThanOrEqual(18);
+          // 24 = NEAR yocto (1e24); covers all known chains (EVM 18, NEAR 24).
+          expect(a.decimals).toBeLessThanOrEqual(24);
         }
       });
 
