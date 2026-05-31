@@ -77,6 +77,7 @@ sandbox/
 scratch/
 *~$*
 guardrail-tab-*.png
+oap-*.png
 .playwright-mcp/
 
 # --- Claude Code local state (sessions/replay/notif state — never commit) ---
