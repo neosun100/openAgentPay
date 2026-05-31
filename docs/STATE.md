@@ -12,13 +12,14 @@
 
 ---
 
-## 📊 Current state (post-v0.11.1 · last working session 2026-05-31)
+## 📊 Current state (post-v0.12.0 · last working session 2026-05-31)
 
 ```
-Tests:        2045 passing     (TS 1993 + Python 52)   ← was 666 at v0.10 (3.07×)
-Packages:     65                (was 40)
+Tests:        2320 passing     (TS 2268 + Python 52)   ← was 666 at v0.10 (3.5×)
+Packages:     74                (was 40; 72 packages + 2 apps)
 Protocols:    18 ProtocolAdapters  ← ALL 18 conformance-green (was 5)
-Wallets:      28 WalletConnectors   ← 25 live in demo /api/wallets
+Wallets:      34 WalletConnectors   ← EVM L2 matrix added (Base/Arb/OP/Polygon/zkSync/Linea)
+SDKs:         @openagentpay/sdk (TS) + openagentpay (Python) — full remote HTTP clients
 L2 on-chain:  Stellar + Aptos + Sui funded via public faucets (pnpm l2:verify, 3/3)
 Frameworks:   10 plugins             (5 TS + 5 Python)
 Layers:        L0 CLI · L1 Plugin · L2 Orchestration · L3 Protocol · L4 Wallet · L5 Settlement

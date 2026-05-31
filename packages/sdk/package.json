@@ -1,0 +1,29 @@
+{
+  "name": "@openagentpay/sdk",
+  "version": "0.1.0-alpha.0",
+  "description": "Typed remote HTTP client for the oap-proxy / demo-api REST surface — the \"client→proxy\" half of the LiteLLM analogy. Point it at a running OpenAgentPay endpoint and call payments in one line.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": { "import": "./dist/index.js", "types": "./dist/index.d.ts" },
+    "./package.json": "./package.json"
+  },
+  "files": ["dist", "src"],
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist *.tsbuildinfo"
+  },
+  "keywords": ["openagentpay", "sdk", "http-client", "x402", "agent-payments", "litellm"],
+  "dependencies": {
+    "@openagentpay/core": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.0",
+    "vitest": "^2.1.0"
+  }
+}

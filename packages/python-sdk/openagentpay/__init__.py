@@ -7,9 +7,23 @@ Public entrypoint — import from here:
         Money, Asset, PaymentRequest, SettlementResult,
     )
 
+Or the async REST client (twin of @openagentpay/sdk):
+
+    from openagentpay import OpenAgentPayClient
+
 License: Apache-2.0
 """
 
+from openagentpay.client import (
+    OpenAgentPayApiError,
+    OpenAgentPayClient,
+    PaymentAuthorization,
+    PaymentPayload,
+    PayResult,
+    SessionInfo,
+    WalletEntry,
+    WalletList,
+)
 from openagentpay.types import (
     Asset,
     Balance,
@@ -51,7 +65,6 @@ from openagentpay.types import (
 __version__ = "0.1.0a0"
 
 __all__ = [
-    "__version__",
     "Asset",
     "Balance",
     "CreateInstrumentInput",
@@ -61,9 +74,14 @@ __all__ = [
     "Instrument",
     "InstrumentId",
     "Money",
+    "OpenAgentPayApiError",
+    "OpenAgentPayClient",
     "OpenAgentPayRuntimeConfig",
+    "PayResult",
+    "PaymentAuthorization",
     "PaymentEvent",
     "PaymentEventType",
+    "PaymentPayload",
     "PaymentRequest",
     "ProtocolAdapter",
     "ProtocolError",
@@ -72,6 +90,7 @@ __all__ = [
     "ReservationResult",
     "Session",
     "SessionId",
+    "SessionInfo",
     "SessionStatus",
     "SettlementErrorCode",
     "SettlementResult",
@@ -85,6 +104,9 @@ __all__ = [
     "UserId",
     "WalletCapabilities",
     "WalletConnector",
+    "WalletEntry",
+    "WalletList",
     "WalletProviderId",
+    "__version__",
     "now_iso",
 ]
