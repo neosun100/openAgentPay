@@ -81,10 +81,10 @@ I can do these without you needing to register anything.
 - **Acceptance**: `oap pay --to <addr> --amount 1.5USDC --wallet hashkey` works against the local proxy
 
 ### B4 — Python SDK: full client (not just types)
-- **Status**: ⏳ pending
-- **Why**: `packages/python-sdk` only has `types.py`. Mirror the TS `PaymentManager` API for Python users who don't want a framework plugin.
-- **Effort**: ~4 hr
-- **Acceptance**: `from openagentpay import PaymentManager` works; basic `process_payment()` flow against demo-api
+- **Status**: ✅ done — `packages/python-sdk/openagentpay/client.py` is a full
+  396-line async `OpenAgentPayClient` (create_session / pay / get_session /
+  list_wallets / get_governance / get_audit / pay_once) + 419 lines of tests.
+  Mirrors the TS HTTP contract (client→proxy model).
 
 ### B5 — More framework plugins (Python)
 - **Status**: ⏳ pending
@@ -113,9 +113,8 @@ I can do these without you needing to register anything.
 - **Acceptance**: `oap audit --since 2024-01-01 --kind payment_success` queries the audit sink
 
 ### B10 — Spend Analytics Tab v2 — charts
-- **Status**: ⏳ pending
-- **Why**: Today it's tables. Add a small SVG sparkline for "spend over time" + a pie for wallet share.
-- **Effort**: ~2 hr (no library — hand-rolled SVG)
+- **Status**: ✅ done — `apps/demo-web/src/SpendAnalyticsTab.tsx` has hand-rolled
+  inline SVG charts ("Cumulative spend" + wallet share), no chart library.
 
 ---
 
