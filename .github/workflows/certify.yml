@@ -1,0 +1,75 @@
+name: certify
+
+# Reusable conformance certification workflow.
+#
+#   workflow_dispatch — run manually from the Actions tab
+#   workflow_call     — invoke from another workflow (federated self-certify)
+#
+# Given a package name, it installs, builds, runs that package's conformance
+# test, and on success echoes a ConformanceCertificate JSON to the job summary.
+#
+# Security: `package` input is consumed ONLY via the `INPUT_PACKAGE` env var and
+# never interpolated into a `run:` shell line, so untrusted input cannot inject
+# commands. All `run:` steps use static commands.
+
+on:
+  workflow_dispatch:
+    inputs:
+      package:
+        description: "Package name to certify (e.g. @openagentpay/wallet-foo)"
+        required: true
+        type: string
+  workflow_call:
+    inputs:
+      package:
+        description: "Package name to certify (e.g. @openagentpay/wallet-foo)"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  certify:
+    runs-on: ubuntu-latest
+    env:
+      INPUT_PACKAGE: ${{ inputs.package }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Build conformance + certifier
+        run: pnpm --filter @openagentpay/conformance build && pnpm --filter @openagentpay/certifier build
+
+      - name: Build subject package
+        run: pnpm --filter "$INPUT_PACKAGE" build
+
+      - name: Run conformance test
+        run: pnpm --filter "$INPUT_PACKAGE" test
+
+      - name: Emit certificate to job summary
+        if: success()
+        run: |
+          {
+            echo "## ✅ Conformance Certificate"
+            echo ""
+            echo '```json'
+            node -e 'const p=process.env.INPUT_PACKAGE;console.log(JSON.stringify({subject:p,subjectKind:"wallet",issuer:"github-actions",issuedAt:new Date().toISOString(),result:{allPassed:true}},null,2));'
+            echo '```'
+            echo ""
+            echo "> Suite passed for \`$INPUT_PACKAGE\`. Sign this certificate with \`signCertificateHmac\` from @openagentpay/certifier to make it verifiable."
+          } >> "$GITHUB_STEP_SUMMARY"

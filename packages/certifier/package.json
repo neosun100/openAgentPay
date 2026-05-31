@@ -1,0 +1,39 @@
+{
+  "name": "@openagentpay/certifier",
+  "version": "0.1.0-alpha.0",
+  "description": "Federated conformance certifier for OpenAgentPay — issues signed, verifiable ConformanceCertificates so third parties can self-certify their wallet/protocol connectors. Foundation for oapconformance.io.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": { "import": "./dist/index.js", "types": "./dist/index.d.ts" },
+    "./package.json": "./package.json"
+  },
+  "files": ["dist", "src", "README.md"],
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist *.tsbuildinfo"
+  },
+  "keywords": [
+    "openagentpay",
+    "conformance",
+    "certificate",
+    "certifier",
+    "federated",
+    "self-certify",
+    "hmac"
+  ],
+  "dependencies": {
+    "@openagentpay/core": "workspace:*",
+    "@openagentpay/conformance": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.5.0",
+    "vitest": "^2.1.0"
+  }
+}
