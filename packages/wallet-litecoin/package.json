@@ -1,0 +1,33 @@
+{
+  "name": "@openagentpay/wallet-litecoin",
+  "version": "0.1.0-alpha.0",
+  "description": "Litecoin wallet connector for OpenAgentPay — UTXO / secp256k1 / native SegWit bech32 (tltc1q…) proof-of-abstraction.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": { "import": "./dist/index.js", "types": "./dist/index.d.ts" },
+    "./package.json": "./package.json"
+  },
+  "files": ["dist", "src"],
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist *.tsbuildinfo"
+  },
+  "keywords": ["litecoin", "litecoin-pay", "openagentpay", "non-evm", "utxo", "secp256k1", "segwit", "bech32"],
+  "dependencies": {
+    "@openagentpay/core": "workspace:*",
+    "@noble/curves": "^1.9.0",
+    "@noble/hashes": "^1.8.0",
+    "@scure/base": "^1.2.0"
+  },
+  "devDependencies": {
+    "@openagentpay/conformance": "workspace:*",
+    "typescript": "^5.5.0",
+    "vitest": "^2.1.0"
+  }
+}
