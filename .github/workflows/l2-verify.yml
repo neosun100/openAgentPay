@@ -1,0 +1,44 @@
+name: L2 Faucet Verify
+
+# L2 on-chain verification hits public testnet faucets, which rate-limit by IP.
+# So it is NOT a PR gate — it runs on a weekly schedule (and on-demand) to prove
+# the credential-free connectors still mint real, faucet-fundable addresses.
+
+on:
+  schedule:
+    # Mondays 06:17 UTC — off the top-of-hour to avoid faucet rush.
+    - cron: "17 6 * * 1"
+  workflow_dispatch: {}
+
+concurrency:
+  group: l2-verify
+  cancel-in-progress: false
+
+jobs:
+  l2-verify:
+    name: L2 faucet on-chain proof (Stellar + Aptos + Sui)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Build wallet packages used by l2:verify
+        run: pnpm -r build
+
+      # Faucets are best-effort: a rate-limit shouldn't fail the scheduled run.
+      # The script exits non-zero only if ALL chains fail; a partial faucet
+      # outage is reported but tolerated.
+      - name: L2 verify (Stellar + Aptos + Sui)
+        run: pnpm l2:verify
+        continue-on-error: true
