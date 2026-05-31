@@ -8,6 +8,45 @@ working snapshot.
 
 ---
 
+## [0.14.0] · 2026-05-31 — **5 SDK languages · 46 wallets · 20 frameworks**
+
+> **Headline**: OpenAgentPay now ships full client SDKs in **5 languages**
+> (TypeScript, Python, Go, Java + the in-process core), the wallet matrix
+> reaches **46 connectors**, and agent-framework coverage hits **20 plugins**.
+>
+> **Stats**: **2922 TS + 52 Python + 35 Go + 16 Java = 3025 tests** across 4
+> languages · 46 wallet connectors · 20 agent frameworks · 18 protocols ·
+> 94 packages · zero failures.
+
+### Added — Go SDK (`sdks/go`)
+
+`github.com/neosun100/openagentpay-go` — `OpenAgentPayClient` over stdlib
+`net/http` (zero external deps). Idiomatic Go: `context.Context` first arg,
+`(T, error)` returns, functional options (`WithAPIKey`/`WithHTTPClient`),
+`APIError` type. CreateSession/Pay/GetSession/ListWallets/GetGovernance/
+GetAudit/PayOnce. httptest-based tests, `go build`/`vet`/`test` green.
+
+### Added — Java SDK (`sdks/java`)
+
+`com.openagentpay:openagentpay-sdk` (Maven, Java 17) — `OpenAgentPayClient`
+over JDK `java.net.http.HttpClient`, builder pattern, Java records for wire
+types (Jackson), `OpenAgentPayApiException`. JUnit 5 tests via JDK HttpServer
+stub: 16 tests, 0 failures.
+
+### Added — 6 chain connectors (matrix 40 → 46)
+
+`wallet-sei`, `wallet-celestia` (Cosmos-SDK bech32), `wallet-injective`
+(Ethermint secp256k1+keccak), `wallet-kaspa` (cashaddr), `wallet-ton-mainnet`
+(Ed25519 mainnet bounceable EQ), `wallet-berachain` (EVM viem EIP-3009,
+bArtio 80084). All conformance-green offline + LIVE.
+
+### Added — 5 framework plugins (15 → 20)
+
+`smolagents`, `agno`, `pydantic-graph`, `llamaindex-workflows`, `motia` —
+thin shims over the `OpenAgentPayLlamaTool` kernel.
+
+---
+
 ## [0.13.0] · 2026-05-31 — **40 wallets · 15 frameworks · cross-protocol conformance v3**
 
 > **Headline**: the matrix widens on three axes at once — chains, agent

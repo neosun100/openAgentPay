@@ -12,16 +12,16 @@
 
 ---
 
-## 📊 Current state (post-v0.13.0 · last working session 2026-05-31)
+## 📊 Current state (post-v0.14.0 · last working session 2026-05-31)
 
 ```
-Tests:        2658 passing     (TS 2606 + Python 52)   ← was 666 at v0.10 (4×)
-Packages:     85                (83 packages + 2 apps)
+Tests:        3025 passing     (TS 2922 + Python 52 + Go 35 + Java 16)   ← was 666 at v0.10 (4.5×)
+Packages:     96                (94 pnpm packages + 2 apps; + sdks/go + sdks/java)
 Protocols:    18 ProtocolAdapters  ← ALL 18 conformance-green + composition v3
-Wallets:      40 WalletConnectors   ← +Litecoin/Dogecoin/Tezos/Flow/Ripple/Monero
-SDKs:         @openagentpay/sdk (TS) + openagentpay (Python) — full remote HTTP clients
+Wallets:      46 WalletConnectors   ← +Sei/Celestia/Kaspa/Injective/TON-mainnet/Berachain
+SDKs:         5 languages — TS + Python + Go + Java full HTTP clients + in-process core
 L2 on-chain:  Stellar + Aptos + Sui funded via public faucets (pnpm l2:verify, 3/3)
-Frameworks:   15 plugins             (10 TS + 5 Python)  ← +ai-sdk-v5/openai-agents/voltagent/spinai/xsai
+Frameworks:   20 plugins             (15 TS + 5 Python)  ← +smolagents/agno/pydantic-graph/llamaindex-workflows/motia
 Layers:        L0 CLI · L1 Plugin · L2 Orchestration · L3 Protocol · L4 Wallet · L5 Settlement
 Live URL:     https://d1p7yxa99nxaye.cloudfront.net  (AWS us-east-1)
 CI:           .github/workflows/ci.yml (build + test + conformance + python)
