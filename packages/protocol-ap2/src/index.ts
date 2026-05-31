@@ -16,3 +16,12 @@ export {
   type Ap2ProtocolAdapterConfig,
   type MandateVerifier,
 } from "./adapter.js";
+
+export {
+  Ap2V2Negotiator,
+  AP2_V2_VERSION,
+  NULL_AP2_V2_PROOF,
+  type Ap2NegotiationResult,
+  type Ap2V2NegotiatorConfig,
+  type Ap2V2SignatureHook,
+} from "./a2a-v02.js";
