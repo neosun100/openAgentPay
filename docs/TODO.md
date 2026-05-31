@@ -189,7 +189,7 @@ I can do these without you needing to register anything.
 
 ```
 v0.11 wallet integration matrix:
-[████████████████████] 46 wallets · 20 frameworks · 5-language SDKs · 18/18 protocols+v3    ✅ v0.14.0
+[████████████████████] 52 wallets · 25 frameworks · 6-language SDKs · 19 protocols + A2A discovery    ✅ v0.15.0
 
 v1.0 readiness (subjective):
 [██████████████████░░] 90%
@@ -204,5 +204,5 @@ v1.0 readiness (subjective):
 
 ---
 
-*Last updated: 2026-05-31 — v0.14.0 (3025 tests/4 langs, 46 wallets, 20 frameworks, Go+Java SDKs)*
+*Last updated: 2026-05-31 — v0.15.0 (3381 tests/5 langs, 52 wallets, 25 frameworks, Rust SDK + A2A discovery)*
 *Update protocol: when a task moves status, update the row + bump the "Last updated" line.*

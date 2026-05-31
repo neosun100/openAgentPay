@@ -12,16 +12,16 @@
 
 ---
 
-## 📊 Current state (post-v0.14.0 · last working session 2026-05-31)
+## 📊 Current state (post-v0.15.0 · last working session 2026-05-31)
 
 ```
-Tests:        3025 passing     (TS 2922 + Python 52 + Go 35 + Java 16)   ← was 666 at v0.10 (4.5×)
-Packages:     96                (94 pnpm packages + 2 apps; + sdks/go + sdks/java)
-Protocols:    18 ProtocolAdapters  ← ALL 18 conformance-green + composition v3
-Wallets:      46 WalletConnectors   ← +Sei/Celestia/Kaspa/Injective/TON-mainnet/Berachain
-SDKs:         5 languages — TS + Python + Go + Java full HTTP clients + in-process core
+Tests:        3381 passing     (TS 3260 + Python 52 + Go 35 + Java 16 + Rust 18)   ← was 666 at v0.10 (5×)
+Packages:     107               (106 pnpm packages + 2 apps; + sdks/go + sdks/java + sdks/rust)
+Protocols:    19 ProtocolAdapters  ← +A2A capability discovery; all conformance-green + composition v3
+Wallets:      52 WalletConnectors   ← +Near-mainnet/Tron-mainnet/Scroll/Mantle/Blast/Mode
+SDKs:         6 languages — TS + Python + Go + Java + Rust full HTTP clients + in-process core
 L2 on-chain:  Stellar + Aptos + Sui funded via public faucets (pnpm l2:verify, 3/3)
-Frameworks:   20 plugins             (15 TS + 5 Python)  ← +smolagents/agno/pydantic-graph/llamaindex-workflows/motia
+Frameworks:   25 plugins             (20 TS + 5 Python)  ← +dspy/instructor-js/llama-stack/cloudflare-agents/mcp-tool
 Layers:        L0 CLI · L1 Plugin · L2 Orchestration · L3 Protocol · L4 Wallet · L5 Settlement
 Live URL:     https://d1p7yxa99nxaye.cloudfront.net  (AWS us-east-1)
 CI:           .github/workflows/ci.yml (build + test + conformance + python)
