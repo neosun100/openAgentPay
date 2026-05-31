@@ -1,0 +1,30 @@
+{
+  "name": "@openagentpay/crewai-flows-plugin",
+  "version": "0.1.0-alpha.0",
+  "description": "CrewAI Flows tool integration for OpenAgentPay — @tool-style descriptor with autonomous payments for the Flows API.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": { "import": "./dist/index.js", "types": "./dist/index.d.ts" },
+    "./package.json": "./package.json"
+  },
+  "files": ["dist", "src"],
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist *.tsbuildinfo"
+  },
+  "keywords": ["crewai", "crewai-flows", "openagentpay", "ai-agent", "payments", "x402", "ap2"],
+  "dependencies": {
+    "@openagentpay/core": "workspace:*",
+    "@openagentpay/llamaindex-plugin": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.0",
+    "vitest": "^2.1.0"
+  }
+}

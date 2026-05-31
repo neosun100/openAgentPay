@@ -162,6 +162,37 @@ import {
   LINEA_SEPOLIA_USDC,
   MemoryInstrumentStore as LineaStore,
 } from "@openagentpay/wallet-linea";
+// --- v0.16 chain expansion (52 -> 58) ---
+import {
+  RoninSaigonConnector,
+  RONIN_SAIGON_USDC,
+  MemoryInstrumentStore as RoninStore,
+} from "@openagentpay/wallet-ronin";
+import {
+  SonicConnector,
+  SONIC_BLAZE_USDC,
+  MemoryInstrumentStore as SonicStore,
+} from "@openagentpay/wallet-sonic";
+import {
+  BerachainMainnetConnector,
+  BERACHAIN_MAINNET_STABLE,
+  MemoryInstrumentStore as BeraStore,
+} from "@openagentpay/wallet-berachain-mainnet";
+import {
+  MovementConnector,
+  RealMovementSigner,
+  MemoryInstrumentStore as MovementStore,
+} from "@openagentpay/wallet-movement";
+import {
+  InitiaConnector,
+  RealInitiaSigner,
+  MemoryInstrumentStore as InitiaStore,
+} from "@openagentpay/wallet-initia";
+import {
+  StacksConnector,
+  RealStacksSigner,
+  MemoryInstrumentStore as StacksStore,
+} from "@openagentpay/wallet-stacks";
 
 // ----------------------------------------------------------------------------
 //  Bundle helper — fills ConnectorBundle metadata for a self-contained wallet
@@ -864,6 +895,143 @@ export function buildSelfContainedBundles(): ConnectorBundle[] {
         tokenDecimals: 6,
         addressExplorer: (a) => `https://sepolia.lineascan.build/address/${a}`,
         txExplorer: (h) => `https://sepolia.lineascan.build/tx/${h}`,
+      })
+    );
+  }
+
+  // --- Ronin Saigon (self-custodial EVM, x402 USDC) ---
+  {
+    const connector = new RoninSaigonConnector({
+      privateKey: generatePrivateKey(),
+      tokenAddress: RONIN_SAIGON_USDC,
+      instrumentStore: new RoninStore(),
+    });
+    bundles.push(
+      bundleOf({
+        connector,
+        agentAddress: connector.agentAddress,
+        chainName: "Ronin Saigon",
+        chainId: 2021,
+        tokenLabel: "USDC",
+        tokenAddress: RONIN_SAIGON_USDC,
+        tokenDecimals: 6,
+        addressExplorer: (a) => `https://saigon-app.roninchain.com/address/${a}`,
+        txExplorer: (h) => `https://saigon-app.roninchain.com/tx/${h}`,
+      })
+    );
+  }
+
+  // --- Sonic Blaze (self-custodial EVM, x402 USDC) ---
+  {
+    const connector = new SonicConnector({
+      privateKey: generatePrivateKey(),
+      tokenAddress: SONIC_BLAZE_USDC,
+      instrumentStore: new SonicStore(),
+      broadcast: "mock",
+    });
+    bundles.push(
+      bundleOf({
+        connector,
+        agentAddress: connector.agentAddress,
+        chainName: "Sonic Blaze",
+        chainId: 57054,
+        tokenLabel: "USDC",
+        tokenAddress: SONIC_BLAZE_USDC,
+        tokenDecimals: 6,
+        addressExplorer: (a) => `https://testnet.sonicscan.org/address/${a}`,
+        txExplorer: (h) => `https://testnet.sonicscan.org/tx/${h}`,
+      })
+    );
+  }
+
+  // --- Berachain mainnet (self-custodial EVM, x402 USDC) ---
+  {
+    const connector = new BerachainMainnetConnector({
+      privateKey: generatePrivateKey(),
+      instrumentStore: new BeraStore(),
+    });
+    bundles.push(
+      bundleOf({
+        connector,
+        agentAddress: connector.agentAddress,
+        chainName: "Berachain",
+        chainId: 80094,
+        tokenLabel: "USDC",
+        tokenAddress: BERACHAIN_MAINNET_STABLE,
+        tokenDecimals: 6,
+        addressExplorer: (a) => `https://berascan.com/address/${a}`,
+        txExplorer: (h) => `https://berascan.com/tx/${h}`,
+      })
+    );
+  }
+
+  // --- Movement testnet (self-custodial Move-VM, in-process Ed25519) ---
+  {
+    const signer = new RealMovementSigner({ network: "testnet" });
+    const connector = new MovementConnector({
+      signer,
+      instrumentStore: new MovementStore(),
+      network: "testnet",
+    });
+    bundles.push(
+      bundleOf({
+        connector,
+        agentAddress: signer.address,
+        chainName: "Movement Testnet",
+        chainId: 0,
+        tokenLabel: "USDC",
+        tokenAddress: "0x1::usdc::USDC",
+        tokenDecimals: 6,
+        addressExplorer: (a) =>
+          `https://explorer.movementlabs.xyz/account/${a}?network=testnet`,
+        txExplorer: (h) =>
+          `https://explorer.movementlabs.xyz/txn/${h}?network=testnet`,
+      })
+    );
+  }
+
+  // --- Initia testnet (self-custodial Cosmos-SDK, in-process secp256k1) ---
+  {
+    const signer = new RealInitiaSigner({ chainId: "initiation-2" });
+    const connector = new InitiaConnector({
+      signer,
+      instrumentStore: new InitiaStore(),
+      chainId: "initiation-2",
+    });
+    bundles.push(
+      bundleOf({
+        connector,
+        agentAddress: signer.address,
+        chainName: "Initia Testnet",
+        chainId: 0,
+        tokenLabel: "USDC (uusdc)",
+        tokenAddress: "uusdc",
+        tokenDecimals: 6,
+        addressExplorer: (a) => `https://scan.initia.xyz/initiation-2/accounts/${a}`,
+        txExplorer: (h) => `https://scan.initia.xyz/initiation-2/txs/${h}`,
+      })
+    );
+  }
+
+  // --- Stacks testnet (self-custodial Bitcoin L2, in-process secp256k1) ---
+  {
+    const signer = new RealStacksSigner({ network: "testnet" });
+    const connector = new StacksConnector({
+      signer,
+      instrumentStore: new StacksStore(),
+      network: "testnet",
+    });
+    bundles.push(
+      bundleOf({
+        connector,
+        agentAddress: signer.address,
+        chainName: "Stacks Testnet",
+        chainId: 0,
+        tokenLabel: "STX",
+        tokenAddress: "STX",
+        tokenDecimals: 6,
+        addressExplorer: (a) => `https://explorer.hiro.so/address/${a}?chain=testnet`,
+        txExplorer: (h) => `https://explorer.hiro.so/txid/${h}?chain=testnet`,
       })
     );
   }
