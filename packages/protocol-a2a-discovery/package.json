@@ -1,0 +1,41 @@
+{
+  "name": "@openagentpay/protocol-a2a-discovery",
+  "version": "0.1.0-alpha.0",
+  "description": "A2A capability discovery for OpenAgentPay — agents publish an AgentPaymentCard (wallets/protocols/assets/limits/DID) and counterparties fetch, validate, and negotiate before transacting (Google AP2 A2A / agent-card pattern).",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": ["dist", "src", "doc"],
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist *.tsbuildinfo"
+  },
+  "keywords": [
+    "a2a",
+    "agent-card",
+    "capability-discovery",
+    "agent-payments",
+    "ap2",
+    "did",
+    "openagentpay"
+  ],
+  "dependencies": {
+    "@openagentpay/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@openagentpay/conformance": "workspace:*",
+    "typescript": "^5.5.0",
+    "vitest": "^2.1.0"
+  }
+}
