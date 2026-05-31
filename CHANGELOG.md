@@ -55,8 +55,10 @@ contract guard.**
 - **`pnpm l2:verify`** (`scripts/l2-faucet-verify.ts`): uses each connector's
   in-process `generate*Keypair()` to mint a real address, hits the chain's
   public faucet (no signup), and confirms the account is live on-chain.
-  Stellar testnet (Friendbot → 10000 XLM, Horizon-queryable) and Aptos devnet
-  (faucet → CoinStore live) both confirmed L1→L2.
+  **3/3 credential-free chains confirmed L1→L2**: Stellar testnet (Friendbot →
+  10000 XLM, Horizon-queryable), Aptos devnet (faucet → CoinStore live), Sui
+  devnet (v2 faucet → 10 SUI, transferTxDigest returned). Solana/TRON/Polkadot
+  documented as L1-only (datacenter-IP-blocked / CAPTCHA-gated faucets).
 - **demo-api**: 3 CEX wallets (okx/bitget/bybit, OAP-CEX HMAC, auto mock
   credentials) registered → `/api/wallets` now serves **25 live wallets**.
 - **demo-web**: Matrix header is now dynamic ("25 live wallets · 18

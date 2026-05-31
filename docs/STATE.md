@@ -19,7 +19,7 @@ Tests:        2045 passing     (TS 1993 + Python 52)   ← was 666 at v0.10 (3.0
 Packages:     65                (was 40)
 Protocols:    18 ProtocolAdapters  ← ALL 18 conformance-green (was 5)
 Wallets:      28 WalletConnectors   ← 25 live in demo /api/wallets
-L2 on-chain:  Stellar + Aptos funded via public faucets (pnpm l2:verify)
+L2 on-chain:  Stellar + Aptos + Sui funded via public faucets (pnpm l2:verify, 3/3)
 Frameworks:   10 plugins             (5 TS + 5 Python)
 Layers:        L0 CLI · L1 Plugin · L2 Orchestration · L3 Protocol · L4 Wallet · L5 Settlement
 Live URL:     https://d1p7yxa99nxaye.cloudfront.net  (AWS us-east-1)
