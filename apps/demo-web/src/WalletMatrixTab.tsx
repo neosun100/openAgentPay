@@ -59,6 +59,7 @@ const LIVE_COVERAGE: Readonly<Record<string, ReadonlyArray<string>>> = {
   movement: ["aptos-pay", "x402"],
   initia: ["cosmos-ibc"],
   stacks: ["x402"],
+  okx: ["oap-cex"],
 };
 
 /** Roadmap rows — wallets not yet served live. Greyed in the grid. */
@@ -69,7 +70,6 @@ const ROADMAP_ROWS: ReadonlyArray<{
   protocols: ReadonlyArray<string>;
 }> = [
   { id: "fireblocks", label: "Fireblocks", chain: "EVM", protocols: ["x402", "ap2"] },
-  { id: "okx-pay", label: "OKX Pay", chain: "CEX", protocols: ["oap-cex"] },
   { id: "lightning", label: "Lightning", chain: "BTC", protocols: ["l402"] },
 ];
 
@@ -85,6 +85,7 @@ const L2_CONFIRMED: ReadonlySet<string> = new Set([
   "stellar", // Friendbot → 10000 XLM, Horizon-queryable
   "aptos", // devnet faucet → CoinStore live
   "sui", // v2 faucet → 10 SUI on-chain
+  "okx", // real OKX Demo Trading sandbox — OK-ACCESS-SIGN accepted (pnpm smoke:okx)
 ]);
 
 interface MatrixRow {
