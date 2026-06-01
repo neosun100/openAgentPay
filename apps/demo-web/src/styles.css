@@ -1091,6 +1091,18 @@ nav.tabs {
   color: var(--fg-faint);
   font-weight: 600;
 }
+.matrix-td-adapter {
+  text-align: center;
+  background: transparent;
+}
+.matrix-cell-adapter {
+  color: #7dd3fc;
+  font-weight: 700;
+}
+.matrix-tr-adapter {
+  border-top: 1px dashed var(--bd-faint);
+  opacity: 0.85;
+}
 .matrix-dot {
   width: 6px;
   height: 6px;
