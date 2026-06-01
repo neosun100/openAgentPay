@@ -31,7 +31,39 @@ const PROTOCOLS: ReadonlyArray<{ id: string; label: string }> = [
   { id: "l402", label: "L402" },
   { id: "ap2", label: "AP2" },
   { id: "open-payments", label: "Open-Payments" },
+  // Adapter-ready protocols (conformance-green; awaiting a live wallet driver).
+  { id: "acp", label: "ACP" },
+  { id: "web-monetization", label: "Web-Monetization" },
+  { id: "gnap", label: "GNAP" },
+  { id: "mpp", label: "MPP" },
+  { id: "skyfire", label: "Skyfire" },
+  { id: "nevermined", label: "Nevermined" },
+  { id: "erc8004", label: "ERC-8004" },
+  { id: "erc7777", label: "ERC-7777" },
+  { id: "virtuals-acp", label: "Virtuals-ACP" },
+  { id: "w3c-payment", label: "W3C-Payment" },
+  { id: "a2a-discovery", label: "A2A-Discovery" },
 ];
+
+/**
+ * Protocols that have a conformance-green `ProtocolAdapter` but are not yet
+ * driven end-to-end by a *live* wallet in the demo. They get an "adapter-ready"
+ * marker column so the matrix honestly reflects the 22-adapter protocol layer
+ * without implying a live wallet drives each one.
+ */
+const ADAPTER_READY_PROTOCOLS: ReadonlySet<string> = new Set([
+  "acp",
+  "web-monetization",
+  "gnap",
+  "mpp",
+  "skyfire",
+  "nevermined",
+  "erc8004",
+  "erc7777",
+  "virtuals-acp",
+  "w3c-payment",
+  "a2a-discovery",
+]);
 
 /**
  * Which protocol families each *live* wallet provider supports. Keyed by the
@@ -175,7 +207,7 @@ export function WalletMatrixTab(): JSX.Element {
         <div className="matrix-stat">
           <span className="matrix-stat-num">{liveCount}</span> live wallets
           <span className="matrix-stat-sep">·</span>
-          <span className="matrix-stat-num">18</span> protocols
+          <span className="matrix-stat-num">22</span> protocols
           <span className="matrix-stat-sep">·</span>
           <span className="matrix-stat-num">1</span> interface
         </div>
@@ -279,6 +311,28 @@ export function WalletMatrixTab(): JSX.Element {
                 })}
               </tr>
             ))}
+            {/* Adapter-ready summary row — protocols with a conformance-green
+                adapter but no live wallet driver yet. ◇ ≠ a live ✓ cell. */}
+            <tr className="matrix-tr-adapter">
+              <td className="matrix-td-wallet" style={{ fontStyle: "italic" }}>
+                Adapter ready
+              </td>
+              <td className="matrix-td-chain">—</td>
+              {PROTOCOLS.map((p) => {
+                if (!ADAPTER_READY_PROTOCOLS.has(p.id)) {
+                  return <td key={p.id} className="matrix-td-empty" />;
+                }
+                return (
+                  <td
+                    key={p.id}
+                    className="matrix-td-adapter"
+                    title={`${p.label}: ProtocolAdapter conformance-green; awaiting a live wallet driver`}
+                  >
+                    <span className="matrix-cell-adapter">◇</span>
+                  </td>
+                );
+              })}
+            </tr>
           </tbody>
         </table>
       </div>
@@ -293,9 +347,12 @@ export function WalletMatrixTab(): JSX.Element {
         }}
       >
         Live rows are sourced from <code>/api/wallets</code> in real time.
-        Roadmap rows (greyed) ship in upcoming versions. Any wallet implementing
-        the 5-method <code>WalletConnector</code> interface plugs into every
-        protocol column automatically.
+        Roadmap rows (greyed) ship in upcoming versions.{" "}
+        <span style={{ whiteSpace: "nowrap" }}>◇ = adapter-ready</span> protocols
+        have a conformance-green <code>ProtocolAdapter</code> (22 total) awaiting a
+        live wallet driver. Any wallet implementing the 5-method{" "}
+        <code>WalletConnector</code> interface plugs into every protocol column
+        automatically.
       </footer>
     </section>
   );
