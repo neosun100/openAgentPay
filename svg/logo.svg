@@ -1,0 +1,29 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="OpenAgentPay logo">
+  <title>OpenAgentPay</title>
+  <defs>
+    <linearGradient id="oap-grad" x1="0" y1="0" x2="512" y2="512" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#a18cd1"/>
+      <stop offset="1" stop-color="#fbc2eb"/>
+    </linearGradient>
+    <linearGradient id="oap-bolt" x1="200" y1="150" x2="320" y2="380" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#fff0fb"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Rounded tile -->
+  <rect x="16" y="16" width="480" height="480" rx="112" fill="url(#oap-grad)"/>
+
+  <!-- Abstract "A" (agent): two legs forming an apex; the crossbar is replaced
+       by a lightning bolt (instant payment). Negative-space minimalist mark. -->
+  <g fill="none" stroke="#ffffff" stroke-width="34" stroke-linecap="round" stroke-linejoin="round" opacity="0.96">
+    <!-- left leg -->
+    <path d="M150 384 L256 132"/>
+    <!-- right leg -->
+    <path d="M362 384 L256 132"/>
+  </g>
+
+  <!-- Lightning bolt = the "A" crossbar / payment spark -->
+  <path d="M286 232 L196 300 L246 300 L226 360 L322 286 L268 286 Z"
+        fill="url(#oap-bolt)" stroke="#ffffff" stroke-width="6" stroke-linejoin="round"/>
+</svg>

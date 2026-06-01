@@ -1,0 +1,30 @@
+<svg width="720" height="160" viewBox="0 0 720 160" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="OpenAgentPay">
+  <title>OpenAgentPay</title>
+  <defs>
+    <linearGradient id="oap-grad" x1="0" y1="0" x2="160" y2="160" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#a18cd1"/>
+      <stop offset="1" stop-color="#fbc2eb"/>
+    </linearGradient>
+    <linearGradient id="oap-text" x1="180" y1="40" x2="660" y2="120" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#a18cd1"/>
+      <stop offset="1" stop-color="#e89bd6"/>
+    </linearGradient>
+    <linearGradient id="oap-bolt2" x1="60" y1="44" x2="100" y2="120" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#fff0fb"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Mark (rounded tile, 16..144) -->
+  <rect x="16" y="16" width="128" height="128" rx="30" fill="url(#oap-grad)"/>
+  <g fill="none" stroke="#ffffff" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" opacity="0.96">
+    <path d="M52 116 L80 50"/>
+    <path d="M108 116 L80 50"/>
+  </g>
+  <path d="M88 76 L64 94 L77 94 L72 110 L98 90 L84 90 Z"
+        fill="url(#oap-bolt2)" stroke="#ffffff" stroke-width="2" stroke-linejoin="round"/>
+
+  <!-- Wordmark -->
+  <text x="176" y="82" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, Helvetica, Arial, sans-serif" font-size="46" font-weight="800" fill="url(#oap-text)" letter-spacing="-1">OpenAgentPay</text>
+  <text x="178" y="116" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, Helvetica, Arial, sans-serif" font-size="19" font-weight="500" fill="#8b8b9a" letter-spacing="0.3">The open control plane for AI agent payments</text>
+</svg>
