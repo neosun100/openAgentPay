@@ -74,8 +74,8 @@ OpenAgentPay must additionally provide things LiteLLM never had to think about:
                   │                                                              │
                   │   "Any wallet, any protocol, any governance, any framework" │
                   │                                                              │
-                  │   ✅ 6 wallets × 13 protocols × 7 frameworks                 │
-                  │   ✅ 358 tests · 4 on-chain tx verified                      │
+                  │   ✅ 61 wallets × 22 protocols × 35 frameworks              │
+                  │   ✅ 4114 tests (5 langs) · dual-CEX live · 8 L2-confirmed  │
                   │   ✅ Live on AWS — https://d1p7yxa99nxaye.cloudfront.net    │
                   └─────────────────────────────────────────────────────────────┘
 ```
@@ -175,9 +175,9 @@ Two independent implementations (Python + TypeScript) producing identical on-cha
 | 1 | `packages/proxy` — standalone HTTP/gRPC OpenAgentPay server | LiteLLM Proxy equivalent — multi-tenant, virtual API keys | 🚧 Started 2026-05-24 |
 | 2 | `packages/cli` — `oap` CLI (`oap proxy start`, `oap pay`, `oap doctor`) | Operational ergonomics | 🟡 Planned |
 | 3 | `packages/config` — `openagentpay.yaml` schema + loader | Declarative wiring (config-driven, no code) | 🟡 Planned |
-| 4 | `packages/conformance` — WalletConnector + ProtocolAdapter test suite | Lets third parties self-certify | 🚧 Started 2026-05-24 |
+| 4 | `packages/conformance` — WalletConnector + ProtocolAdapter test suite | Lets third parties self-certify | ✅ Done + `@openagentpay/certifier` (federated, signed certs + `certify.yml`) |
 | 5 | `docs/MIGRATION-FROM-LITELLM.md` | Cognitive bridge for LiteLLM users | 🟡 Planned |
-| 6 | Updated README to reflect v0.8 reality | Today's README still says v0.4 | 🚧 In progress |
+| 6 | Updated README to reflect current reality | — | ✅ Done (refreshed to v0.19: 61 wallets / 22 protocols / 35 frameworks) |
 
 ### 6.2 Wave 2 — High-ROI wallet + governance gaps (3-4 weeks)
 

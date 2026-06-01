@@ -1,6 +1,6 @@
 # 🗺️ OpenAgentPay — Roadmap
 
-> **Quarterly arc from where we are (v0.10) to v1.0 GA.**
+> **Quarterly arc from where we are (v0.19) to v1.0 GA.**
 >
 > See [`STATE.md`](./STATE.md) for the resumable-state entry point.
 > See [`TODO.md`](./TODO.md) for current-sprint granular tasks.
@@ -11,22 +11,36 @@
 
 | Release | Theme | Dates | Status |
 |---|---|---|---|
-| v0.10 | LiteLLM-shape product complete | shipped 2026-05-24 | ✅ |
-| **v0.11** | **Wallet matrix: 6 → 28 connectors + 18/18 protocol conformance** | shipped 2026-05-31 | ✅ |
-| v0.12 | Refund/Subscription/Receipt productization | 2026 Q3 | ✅ pulled into v0.11 (core primitives) |
-| v0.13 | Multi-language SDKs (Python full / Go / Java) | 2026 Q3-Q4 | 📅 planned |
-| v0.14 | OAP-CEX 2nd impl + AP2 v0.2 + ERC-8004 v2 | 2026 Q4 | 🚧 protocol conformance v2 done in v0.11 |
-| v0.15 | Federated conformance, public certifier dashboard | 2027 Q1 | 📅 planned |
-| v0.16 | Anomaly detection + ML-based spend anomalies | 2027 Q1 | 📅 planned |
+| v0.10 | LiteLLM-shape product complete | 2026-05-24 | ✅ |
+| v0.11 | Wallet matrix: 6 → ~28 connectors + protocol conformance v2 | 2026-05-31 | ✅ |
+| v0.12–v0.15 | 6-language SDKs · refund/subscription/receipt · http-interceptor · A2A discovery · 52 wallets | 2026-05-31 | ✅ (pulled forward) |
+| v0.16 | +6 chains · +5 framework plugins · **federated certifier** (`certify.yml`) | 2026-05-31 | ✅ |
+| v0.17 | `oap pay/session/audit` CLI · **S3-WORM audit sink** · +2 Python plugins | 2026-06-01 | ✅ |
+| v0.18 | **Go/Java in-process engines** · AP2 v0.2 A2A · +3 chains · Certify tab | 2026-06-01 | ✅ |
+| v0.18.1 | **OAP-CEX 2nd impl** — OKX live sandbox proof | 2026-06-01 | ✅ |
+| v0.19 | +3 protocol adapters (**ACP · Web Monetization · GNAP**) → 22 protocols | 2026-06-01 | ✅ |
+| **— current main —** | **61 wallets (8 L2) · 22 protocols · 35 frameworks · 6-lang SDK · 4114 tests** | | ✅ |
+| v0.20 | More A-class wallets → L2 (Circle/Bybit/Bitget/Crossmint) · Cobo MPC | 2026 Q3 | 🚧 needs credentials |
+| v0.21 | Anomaly detection + ML-based spend anomalies · `oap proxy` cluster mode | 2027 Q1 | 📅 planned |
 | **v1.0 GA** | **Production-ready, mainnet-blessed, SOC-2 path** | 2027 Q2 | 🎯 |
 
 ---
 
-## 🎯 v0.11 — "Wallet matrix complete" (current focus)
+## 🎯 Where we are now (post-v0.19)
 
-### Goal
+### What's done
 
-After v0.11, **every one of OpenAgentPay's 18 protocols has at least one real, testnet-verified wallet integration**. The "switch any wallet with one config-line" claim becomes literal: change `walletProvider` in yaml, the agent now uses Lightning instead of Coinbase, or Stellar instead of Solana — same business code.
+**Every one of OpenAgentPay's 22 protocols has a conformance-green adapter**, and
+the "switch any wallet with one config-line" claim is literal: change
+`walletProvider` in yaml and the agent settles via a different rail with the same
+business code. **61 wallet connectors** (8 L2-confirmed against real chains/CEX:
+hashkey · coinbase-cdp · stellar · aptos · sui · **okx** · **magic** · **zerodev**),
+**35 framework plugins** (28 TS + 7 Python), **6-language SDKs** (TS · Python · Go ·
+Java · Rust — Go/Java with in-process engines), a **federated certifier**, and
+**dual-CEX live proof** (Binance + OKX) showing OAP-CEX is not Binance-specific.
+
+### Original v0.11 goal (achieved + exceeded)
+
 
 ### Scope
 
