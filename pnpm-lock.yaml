@@ -33,9 +33,15 @@ importers:
       '@openagentpay/wallet-hashkey':
         specifier: workspace:*
         version: link:packages/wallet-hashkey
+      '@openagentpay/wallet-magic':
+        specifier: workspace:*
+        version: link:packages/wallet-magic
       '@openagentpay/wallet-okx':
         specifier: workspace:*
         version: link:packages/wallet-okx
+      '@openagentpay/wallet-zerodev':
+        specifier: workspace:*
+        version: link:packages/wallet-zerodev
       '@types/node':
         specifier: ^22.0.0
         version: 22.19.19
