@@ -34,7 +34,7 @@ OpenAgentPay = **"LiteLLM for Crypto Agent Payments."** Unified abstraction over
 L0 CLI       — `oap` (config/doctor/conformance) + `oap-proxy` (yaml-driven)
 L1 Plugin    — 35 frameworks (28 TS + 7 Python)
 L2 Orchestration — PaymentManager + ProtocolRouter + WalletRouter + finance + Guardrail
-L3 Protocol  — 19 ProtocolAdapters
+L3 Protocol  — 22 ProtocolAdapters
 L4 Wallet    — 61 WalletConnectors (v0.18.0 ✅; 37 live in demo)
 L5 Settlement — chain RPC / CEX REST / Solana RPC / IBC / Hedera Mirror
 ```
@@ -44,13 +44,13 @@ L5 Settlement — chain RPC / CEX REST / Solana RPC / IBC / Hedera Mirror
 ## 📊 Current state (snapshot — re-verify with `pnpm -r test`)
 
 ```
-Tests: 4030 passing (TS 3837 + Python 89 + Go 56 + Java 30 + Rust 18)
-Packages: 126 (124 pnpm packages + 2 apps; + sdks/go + sdks/java + sdks/rust)
+Tests: 4114 passing (TS 3921 + Python 89 + Go 56 + Java 30 + Rust 18)
+Packages: 129 (127 pnpm packages + 2 apps; + sdks/go + sdks/java + sdks/rust)
 Wallets: 61 connectors (37 live in demo)
-Protocols: 19 adapters (incl. A2A discovery + AP2 v0.2; all conformance-green + composition v3)
+Protocols: 22 adapters (incl. A2A discovery + AP2 v0.2 + ACP/Web-Monetization/GNAP; all conformance-green)
 Frameworks: 35 plugins (28 TS + 7 Python)
 SDKs: 6 languages — TS + Python + Go + Java + Rust; Go & Java now in-process engines too
-Latest version: v0.18.0 (shipped 2026-06-01)
+Latest version: v0.19.0 (shipped 2026-06-01)
 Live URL: https://d1p7yxa99nxaye.cloudfront.net
 CI: .github/workflows/ci.yml + certify.yml
 ```

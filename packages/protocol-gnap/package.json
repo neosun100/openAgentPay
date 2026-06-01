@@ -1,0 +1,15 @@
+{
+  "name": "@openagentpay/protocol-gnap",
+  "version": "0.1.0-alpha.0",
+  "description": "GNAP (Grant Negotiation and Authorization Protocol, RFC 9635) payment-authorization profile adapter.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": { ".": { "import": "./dist/index.js", "types": "./dist/index.d.ts" }, "./package.json": "./package.json" },
+  "files": ["dist", "src"],
+  "scripts": { "build": "tsc", "test": "vitest run", "typecheck": "tsc --noEmit", "clean": "rm -rf dist *.tsbuildinfo" },
+  "keywords": ["gnap", "rfc9635", "authorization", "grant", "oauth", "openagentpay"],
+  "dependencies": { "@openagentpay/core": "workspace:*" },
+  "devDependencies": { "@openagentpay/conformance": "workspace:*", "typescript": "^5.5.0", "vitest": "^2.1.0" }
+}

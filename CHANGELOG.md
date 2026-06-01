@@ -8,6 +8,51 @@ working snapshot.
 
 ---
 
+## [0.19.0] · 2026-06-01 — **+3 protocol adapters: ACP · Web Monetization · GNAP (19 → 22)**
+
+> **Headline**: three new protocol adapters extend the abstraction layer to the
+> hottest agent-commerce + web-native + authorization standards — proving the
+> `ProtocolAdapter` contract spans Coinbase (x402), Google (AP2), Stripe (MPP),
+> **OpenAI (ACP)**, **W3C (Web Monetization)** and **IETF (GNAP)** alike.
+>
+> **Stats**: **3921 TS + 89 Python + 56 Go + 30 Java + 18 Rust = 4114 tests**
+> across 5 languages · 61 wallets · **22 protocols** · 35 frameworks · 129 packages
+> · zero failures.
+
+### Added — `protocol-acp` (OpenAI/Stripe Agentic Commerce Protocol)
+
+`acp-v0.1` — merchant returns a signed checkout-session / cart commitment; the
+agent confirms + pays. Atomic `bigint` total verification (no float drift), sums
+line items, rejects expired / empty / mismatched carts. Composes alongside AP2's
+`CartMandate` (same goal, different ecosystem — OpenAgentPay supports both).
+28 tests (15 unit + 13 conformance).
+
+### Added — `protocol-web-monetization` (W3C / Interledger)
+
+`web-monetization-v1` — the payment-pointer streaming profile of the
+Interledger / Open Payments family. Normalizes `$`-pointer → https, maps asset
+`code`/`scale` → atomic Money. Sibling to `protocol-open-payments` (full grant
+API). 29 tests (16 unit + 13 conformance).
+
+### Added — `protocol-gnap` (IETF RFC 9635)
+
+`gnap-v1` — Grant Negotiation and Authorization Protocol (the OAuth successor)
+as a payment-authorization challenge: picks the `payment`-type access entry,
+carries grant continuation in `X-PAYMENT-GNAP`. An authorization layer that
+composes with any settlement (like AP2 mandates). 27 tests (14 unit + 13
+conformance).
+
+### Note — L2 faucet expansion at its credential-free ceiling
+
+Investigated extending `pnpm l2:verify` beyond the 3 confirmed chains
+(Stellar/Aptos/Sui). Finding: the remaining chains' public faucets are now
+CAPTCHA-/login-gated or block datacenter IPs (Solana needs a Helius key,
+NEAR/TRON/Algorand are gated). Forcing them in would make CI flaky for negative
+marginal value, so L2 expansion now requires credentialed RPC providers — out of
+the credential-free autonomous scope. Pivoted to the protocol layer instead.
+
+---
+
 ## [0.18.1] · 2026-06-01 — **OAP-CEX 2nd implementation: OKX live sandbox proof**
 
 > **Headline**: the `cex-pay` protocol is now proven against a **second, live

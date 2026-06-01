@@ -12,12 +12,12 @@
 
 ---
 
-## 📊 Current state (post-v0.18.0 · last working session 2026-06-01)
+## 📊 Current state (post-v0.19.0 · last working session 2026-06-01)
 
 ```
-Tests:        4030 passing     (TS 3837 + Python 89 + Go 56 + Java 30 + Rust 18)   ← was 666 at v0.10 (6.1×)
-Packages:     126               (124 pnpm packages + 2 apps; + sdks/go + sdks/java + sdks/rust)
-Protocols:    19 ProtocolAdapters  ← +AP2 v0.2 A2A negotiation; all conformance-green + composition v3
+Tests:        4114 passing     (TS 3921 + Python 89 + Go 56 + Java 30 + Rust 18)   ← was 666 at v0.10 (6.2×)
+Packages:     129               (127 pnpm packages + 2 apps; + sdks/go + sdks/java + sdks/rust)
+Protocols:    22 ProtocolAdapters  ← +ACP/Web-Monetization/GNAP; all conformance-green + composition v3
 Wallets:      61 WalletConnectors   ← +Fuel/Aleo/Starknet (celestia enhanced)
 SDKs:         6 languages — TS + Python + Go + Java + Rust; Go & Java now have IN-PROCESS engines
 L2 on-chain:  Stellar + Aptos + Sui funded via public faucets (pnpm l2:verify, 3/3)
