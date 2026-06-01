@@ -8,10 +8,11 @@
 [![HashKey Chain](https://img.shields.io/badge/Live_on-HashKey_Chain_Testnet-purple)](https://testnet-explorer.hsk.xyz/address/0x0685C487Df4Cc0723Aa828C299686798294E9803)
 [![Coinbase CDP](https://img.shields.io/badge/Live_on-Coinbase_CDP_+_Base_Sepolia-blue)](https://sepolia.basescan.org/address/0x851C03756D5e9e057cb518C1B3cd47f628a0Dca7)
 [![CI](https://github.com/neosun100/openAgentPay/actions/workflows/ci.yml/badge.svg)](https://github.com/neosun100/openAgentPay/actions/workflows/ci.yml)
-[![Tests](https://img.shields.io/badge/tests-2045_passing-brightgreen)](#)
-[![Wallets](https://img.shields.io/badge/wallets-28_connectors-blue)](#)
-[![Protocols](https://img.shields.io/badge/protocols-18_adapters-purple)](#)
-[![Plugins](https://img.shields.io/badge/agent_frameworks-10_plugins-pink)](#)
+[![Tests](https://img.shields.io/badge/tests-4114_passing-brightgreen)](#)
+[![Wallets](https://img.shields.io/badge/wallets-61_connectors_(8_L2)-blue)](#)
+[![Protocols](https://img.shields.io/badge/protocols-22_adapters-purple)](#)
+[![Plugins](https://img.shields.io/badge/agent_frameworks-35_plugins-pink)](#)
+[![SDKs](https://img.shields.io/badge/SDKs-6_languages-teal)](#)
 [![Guardrail](https://img.shields.io/badge/Guardrail-7--Layer_+_Approval-orange)](./packages/governance/)
 
 > 👋 **Coming back to this project? Start here:** [`docs/STATE.md`](./docs/STATE.md) — resumable state in 5 minutes. Then [`docs/TODO.md`](./docs/TODO.md) for current sprint, [`docs/ROADMAP.md`](./docs/ROADMAP.md) for the v0.11 → v1.0 arc, and [`docs/WALLET-SIGNUP-PLAN.md`](./docs/WALLET-SIGNUP-PLAN.md) for the wallet sign-up checklist.
@@ -20,17 +21,18 @@
 
 > **🌐 Live demo**: https://d1p7yxa99nxaye.cloudfront.net （已部署到 AWS us-east-1，CloudFront + Lambda + Secrets Manager）
 >
-> **🚀 v0.8.0 现状 (2026-05-24)** — 5-Layer 架构全部落地：
+> **🚀 v0.19.0 现状 (2026-06-01)** — 完整 5+1 层架构 · 6 语言 SDK · 双 CEX 真实验证：
 >
 > | Layer | 内容 | 数量 |
 > |---|---|---|
-> | **L1 Framework Plugin** | langchain · llamaindex · mastra · strands · autogen · crewai · semantic-kernel | **7** |
-> | **L2 PaymentManager + Governance** | core (InMemory + DynamoDB) · 7-Layer Guardrail | ✅ |
-> | **L3 ProtocolAdapter** | x402-v1/v2 · cex-pay · ap2 · solana-pay · mpp · l402 · stellar · w3c-payment · sui · aptos · erc8004 · skyfire · virtuals-acp · nevermined | **13** + Router |
-> | **L4 WalletConnector** | hashkey · coinbase-cdp · binance · metamask · walletconnect · solana | **6** |
-> | **L5 Settlement** | EVM RPC · CEX API · Solana RPC | ✅ |
+> | **L0 CLI** | `oap` config/doctor/conformance/pay/session/audit · `oap-proxy` · `certifier-cli` | ✅ |
+> | **L1 Framework Plugin** | langchain · llamaindex · mastra · vercel-ai · langgraph · strands · autogen · crewai · semantic-kernel · pydantic-ai · …（25 TS + 7 Python）| **35** |
+> | **L2 PaymentManager + Governance** | core (InMemory + DynamoDB) · 7-Layer Guardrail · S3-WORM audit · refund/subscription/receipt | ✅ |
+> | **L3 ProtocolAdapter** | x402 · cex-pay · ap2(+v0.2 A2A) · acp · web-monetization · gnap · mpp · l402 · solana-pay · stellar · sui · aptos · cosmos-ibc · hedera-hcs · tron-usdt · open-payments · erc8004 · erc7777 · skyfire · virtuals-acp · nevermined · a2a-discovery | **22** + Router |
+> | **L4 WalletConnector** | hashkey · coinbase-cdp · binance · okx · circle · magic · zerodev · solana · stellar · aptos · sui · …（8 个 L2-confirmed）| **61** |
+> | **L5 Settlement** | EVM RPC · CEX REST (Binance + OKX live sandbox) · Solana RPC · IBC · Hedera Mirror | ✅ |
 >
-> Plus: `@openagentpay/proxy` (LiteLLM-Proxy-style multi-tenant HTTP server) and `@openagentpay/conformance` (25-test self-certification suite for new connectors). 详见 [📋 CHANGELOG](./CHANGELOG.md) ·
+> Plus: `@openagentpay/proxy` (LiteLLM-Proxy-style multi-tenant HTTP server) · `@openagentpay/conformance` (25-test self-certification suite) · `@openagentpay/certifier` (federated HMAC-signed ConformanceCertificate + reusable `certify.yml`) · 6-language SDK (TS · Python · Go · Java · Rust，Go/Java 含 in-process 引擎). 详见 [📋 CHANGELOG](./CHANGELOG.md) ·
 > [🔬 HashKey demo](./docs/HASHKEY_DEMO.md) ·
 > [⚡ Quickstart](./docs/QUICKSTART.md) ·
 > [🎯 Positioning](./docs/POSITIONING.md)。
