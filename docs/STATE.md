@@ -21,6 +21,7 @@ Protocols:    19 ProtocolAdapters  ← +AP2 v0.2 A2A negotiation; all conformanc
 Wallets:      61 WalletConnectors   ← +Fuel/Aleo/Starknet (celestia enhanced)
 SDKs:         6 languages — TS + Python + Go + Java + Rust; Go & Java now have IN-PROCESS engines
 L2 on-chain:  Stellar + Aptos + Sui funded via public faucets (pnpm l2:verify, 3/3)
+CEX live:     Binance Pay + OKX Demo Trading — OAP-CEX 2nd impl proven (pnpm smoke:okx, OK-ACCESS-SIGN live)
 Frameworks:   35 plugins             (28 TS + 7 Python)  ← +inngest-agentkit/atomic-agents/marvin
 Certifier:    @openagentpay/certifier — signed certs + registry + certifier-cli + runThirdPartyCertification e2e
 CLI:          oap config/doctor/conformance/version + pay/session/audit · certifier-cli

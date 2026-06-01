@@ -8,6 +8,43 @@ working snapshot.
 
 ---
 
+## [0.18.1] · 2026-06-01 — **OAP-CEX 2nd implementation: OKX live sandbox proof**
+
+> **Headline**: the `cex-pay` protocol is now proven against a **second, live
+> exchange** — the existing `wallet-okx` connector was wired to real **OKX Demo
+> Trading** credentials and its `OK-ACCESS-SIGN` HMAC recipe was accepted by the
+> real OKX API (HTTP 200 / code 0). The SAME `cex-pay` adapter now drives both
+> Binance Pay (`BinancePay-Certificate-SN`) and OKX (`OK-ACCESS-SIGN`) — two
+> exchanges with **entirely different signing recipes** — proving OAP-CEX is a
+> genuine abstraction layer, not a Binance-shaped wrapper.
+
+### Added — `scripts/okx-smoke.ts` (`pnpm smoke:okx`)
+
+End-to-end live proof against the real OKX Demo Trading sandbox:
+1. Signed `GET /api/v5/account/config` + `/account/balance` with
+   `x-simulated-trading: 1` — a wrong signature returns OKX `50113`; ours
+   returns `200`, confirming the recipe is byte-exact.
+2. Drives the real `OkxPayConnector` through createInstrument → signAuthorization
+   → settle with an injected **live `submit` hook** (real OKX round-trip), not
+   the offline mock.
+
+Verified live: `uid=594268976717824 · label=openagentpay · perm=read_only,trade
+· settleCcy=USDC`. `wallet-okx` conformance is 45/45 green offline AND under
+`OPENAGENTPAY_LIVE_TESTS=true` with real credentials.
+
+### Changed — demo-web wallet matrix
+
+`okx` promoted from a greyed **roadmap** row to a **live + L2-confirmed** wallet
+(real exchange-API-verified, alongside Binance/HashKey/Coinbase/Stellar/Aptos/Sui).
+
+### Note
+
+Credentials live only in `.env.local` (gitignored); Demo-Trading keys cannot
+touch the live exchange (OKX returns `50101 APIKey does not match current
+environment` without the simulated header). No real funds are ever at risk.
+
+---
+
 ## [0.18.0] · 2026-06-01 — **Go/Java in-process engines · AP2 v0.2 A2A · +3 chains · Certify tab**
 
 > **Headline**: a three-lane parallel sweep — the **Go & Java SDKs gain

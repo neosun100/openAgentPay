@@ -12,7 +12,7 @@
 |---|---|---|---|---|
 | 1 | `x402-v1/v2` | ✅ hashkey, coinbase-cdp, metamask, walletconnect | none | (already 4) |
 | 2 | `ap2-v0.1` | ⚠️ orthogonal — composes with any wallet | ok | (no dedicated wallet needed) |
-| 3 | `cex-pay-v0.1` (OAP-CEX) | ✅ binance | thin (just 1) | 🟡 **OKX Spot testnet** OR 🟡 **HashKey Pro sandbox** |
+| 3 | `cex-pay-v0.1` (OAP-CEX) | ✅ binance · ✅ **okx** (Demo Trading sandbox — OK-ACCESS-SIGN verified live `pnpm smoke:okx`) | 2 impls — protocol proven non-Binance-specific | 🟡 HashKey Pro sandbox (KYC-gated, later) |
 | 4 | `solana-pay-v1` | ⚠️ solana (DemoSigner only) | **needs real signer** | 🟢 **Helius (devnet RPC + faucet)** |
 | 5 | `mpp-v0.1` | ❌ none (sub-protocol of x402, reuses) | covered via x402 | (no action) |
 | 6 | `l402-v1` (Lightning) | ❌ NONE | **critical gap** | 🟡 **Voltage testnet LND node** |
