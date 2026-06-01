@@ -187,13 +187,18 @@ openagentpay/
 │   ├── wallet-hashkey/             # HashKey Chain (x402, EVM, self-custodial)
 │   ├── wallet-coinbase-cdp/        # Coinbase CDP (x402, Base Sepolia, managed TEE)
 │   ├── wallet-binance/             # Binance Pay (OAP-CEX, HMAC-SHA512)
+│   ├── wallet-okx/                 # OKX (OAP-CEX, OK-ACCESS-SIGN — live sandbox verified)
 │   ├── wallet-metamask/            # MetaMask + EIP-1193 (Rabby/Rainbow/Coinbase Wallet)
 │   ├── wallet-walletconnect/       # WalletConnect v2 → 200+ mobile wallets
 │   ├── wallet-solana/              # Solana Pay (non-EVM, Ed25519)
+│   │   # … 61 WalletConnectors total (8 L2-confirmed); see CHANGELOG / demo-web Matrix tab
 │   │
 │   ├── protocol-x402/              # Coinbase x402 v1/v2
 │   ├── protocol-cex-pay/           # OAP-CEX v0.1 (24-page IETF-style spec)
-│   ├── protocol-ap2/               # Google AP2 mandate envelope (W3C VC)
+│   ├── protocol-ap2/               # Google AP2 mandate envelope (+v0.2 A2A negotiation)
+│   ├── protocol-acp/               # OpenAI/Stripe Agentic Commerce Protocol
+│   ├── protocol-web-monetization/  # W3C Web Monetization (Interledger)
+│   ├── protocol-gnap/              # IETF GNAP (RFC 9635) authorization
 │   ├── protocol-mpp/               # Stripe + Tempo Merchant Payments Protocol
 │   ├── protocol-l402/              # Lightning Network LSAT
 │   ├── protocol-stellar/           # Stellar SEP-31 cross-border
@@ -204,22 +209,26 @@ openagentpay/
 │   ├── protocol-skyfire/           # Skyfire KYA agent identity
 │   ├── protocol-virtuals-acp/      # Virtuals 4-phase commerce on Base
 │   ├── protocol-nevermined/        # Nevermined subscription/credit
+│   │   # … 22 ProtocolAdapters total; all conformance-green + composition v3
 │   │
 │   ├── langchain-plugin/           # L1 (TS) — LangChain StructuredTool
-│   ├── llamaindex-plugin/          # L1 (TS) — LlamaIndex FunctionTool
+│   ├── llamaindex-plugin/          # L1 (TS) — LlamaIndex FunctionTool (the kernel)
 │   ├── mastra-plugin/              # L1 (TS) — Mastra
 │   ├── strands-plugin/             # L1 (Python) — AWS Strands @tool
 │   ├── autogen-plugin/             # L1 (Python) — Microsoft AutoGen
 │   ├── crewai-plugin/              # L1 (Python) — CrewAI
 │   ├── semantic-kernel-plugin/     # L1 (Python) — Microsoft Semantic Kernel
+│   │   # … 35 framework plugins total (28 TS + 7 Python), all thin shims over the kernel
 │   │
-│   ├── python-sdk/                 # Python types (mirror of TS core)
+│   ├── certifier/                  # Federated HMAC-signed ConformanceCertificate + registry + CLI
+│   ├── python-sdk/                 # Python full async client (mirror of TS core)
 │   └── cdk-deploy/                 # AWS CDK: API Gateway + Lambda + DynamoDB + Secrets Manager + CloudFront
 │
+├── sdks/                           # 6-language client matrix: go / java / rust (+ TS/Python in packages/)
 ├── apps/
 │   ├── demo-api/                   # Express server (local) → API Gateway → Lambda (prod)
-│   └── demo-web/                   # Vite + React 4-tab UI (Run · How · AI Agent · Guardrail)
-├── scripts/                        # smoke tests + Strands/LangChain demos + HashKey ref impl
+│   └── demo-web/                   # Vite + React 7-tab UI (Run · How · Agent · Guardrail · Spend · Matrix · Certify)
+├── scripts/                        # smoke tests (binance/okx/l2evm) + l2-faucet-verify + HashKey ref impl
 └── docs/
     ├── POSITIONING.md              # ⭐ NEW — Strategic framing as "LiteLLM for Crypto Agent Payments"
     ├── STRATEGY.md                 # 项目北极星文档
@@ -329,13 +338,15 @@ python3 scripts/hashkey/transfer-with-auth.py   # Python ref impl
 | **EVM 自托管（x402 路径）** | **HashKey Chain** ✅ · MetaMask · WalletConnect · Rabby · Safe (multi-sig) · Rainbow · Phantom (EVM) | x402 v1 | HashKey **production-grade** · 其余 roadmap |
 | **AWS 原版兼容（managed）** | **Coinbase CDP** ✅ · Stripe Privy · Magic.link · Web3Auth · Crossmint · Fireblocks · Anchorage | x402 v1 | **CDP 已接入** · 其余 roadmap |
 | **非 EVM 链** | Solana Pay · Sui Pay · Stellar (SEP-29) · Lightning Network (LN-402) · Aptos · Polygon | per-chain protocol | roadmap |
-| **CEX-API（OAP-CEX 路径）** | **Binance Pay** ✅ · OKX Pay · Bitget Wallet · Bybit Pay · HashKey Pro · Bitfinex · KuCoin | OAP-CEX v0.1 | Binance done · 其余按需触发 |
+| **CEX-API（OAP-CEX 路径）** | **Binance Pay** ✅ · **OKX** ✅ · Bitget Wallet · Bybit Pay · HashKey Pro · Bitfinex · KuCoin | OAP-CEX v0.1 | Binance + OKX live-verified · 其余按需触发 |
 | **传统支付** | Stripe (Card) · Alipay · WeChat Pay · PayPal · Apple Pay · Google Pay · Venmo · Cash App | AP2 / W3C-PR / OAP-CEX | roadmap |
 
 **当前已实现**（生产可用）：
 - ✅ **HashKey Chain** — TypeScript + Python 双实现，4 笔链上 tx 验证
 - ✅ **Coinbase CDP** — Base Sepolia + Circle 官方 USDC，4 笔链上 tx 验证（含从 CloudFront 生产 Lambda 路径）
 - ✅ **Binance Pay** — 协议层签名验证，20 unit tests pass
+- ✅ **OKX** — 真实 Demo Trading sandbox 验证 `OK-ACCESS-SIGN` 签名配方（`pnpm smoke:okx`），OAP-CEX 第二实现，证明协议非 Binance 专属
+- ✅ **Magic · ZeroDev** — Base Sepolia L2 链上地址可查询验证（`pnpm smoke:l2evm`）
 
 **接入速度**：客户提需求 + 钱包方有 API，**1-2 天内 ship 新 connector** 到 npm。
 
