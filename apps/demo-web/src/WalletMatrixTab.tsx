@@ -86,6 +86,8 @@ const L2_CONFIRMED: ReadonlySet<string> = new Set([
   "aptos", // devnet faucet → CoinStore live
   "sui", // v2 faucet → 10 SUI on-chain
   "okx", // real OKX Demo Trading sandbox — OK-ACCESS-SIGN accepted (pnpm smoke:okx)
+  "magic", // address live-queryable vs Base Sepolia USDC contract (pnpm smoke:l2evm)
+  "zerodev", // ERC-4337 smart-account live-queryable vs Base Sepolia USDC (pnpm smoke:l2evm)
 ]);
 
 interface MatrixRow {
