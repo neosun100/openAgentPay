@@ -822,6 +822,22 @@ importers:
         specifier: ^2.1.0
         version: 2.1.9(@types/node@22.19.19)
 
+  packages/protocol-acp:
+    dependencies:
+      '@openagentpay/core':
+        specifier: workspace:*
+        version: link:../core
+    devDependencies:
+      '@openagentpay/conformance':
+        specifier: workspace:*
+        version: link:../conformance
+      typescript:
+        specifier: ^5.5.0
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.0
+        version: 2.1.9(@types/node@22.19.19)
+
   packages/protocol-ap2:
     dependencies:
       '@openagentpay/core':
@@ -900,6 +916,22 @@ importers:
         version: 2.1.9(@types/node@22.19.19)
 
   packages/protocol-erc8004:
+    dependencies:
+      '@openagentpay/core':
+        specifier: workspace:*
+        version: link:../core
+    devDependencies:
+      '@openagentpay/conformance':
+        specifier: workspace:*
+        version: link:../conformance
+      typescript:
+        specifier: ^5.5.0
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.0
+        version: 2.1.9(@types/node@22.19.19)
+
+  packages/protocol-gnap:
     dependencies:
       '@openagentpay/core':
         specifier: workspace:*
@@ -1076,6 +1108,22 @@ importers:
         version: 2.1.9(@types/node@22.19.19)
 
   packages/protocol-w3c-payment:
+    dependencies:
+      '@openagentpay/core':
+        specifier: workspace:*
+        version: link:../core
+    devDependencies:
+      '@openagentpay/conformance':
+        specifier: workspace:*
+        version: link:../conformance
+      typescript:
+        specifier: ^5.5.0
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.0
+        version: 2.1.9(@types/node@22.19.19)
+
+  packages/protocol-web-monetization:
     dependencies:
       '@openagentpay/core':
         specifier: workspace:*
